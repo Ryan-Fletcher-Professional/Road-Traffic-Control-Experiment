@@ -7,7 +7,7 @@ import rewards
 
 root = tk.Tk()
 root.withdraw()
-directory = filedialog.askdirectory(title="Select Traffic Data Directory", initialdir="C:\\Users\\jancy\\Desktop\\mathew\\Amherst\\Spring2023\\Neural_Networks\\gym-examples\\sumo_rl_repo\\nets")
+directory = filedialog.askdirectory(title="Select Traffic Data Directory")
 files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
 if len(files) < 2:
     print("Less than 2 files.")
@@ -19,7 +19,7 @@ env = gym.make('sumo-rl-v0',
                 out_csv_name=directory+"\\output.csv",
                 use_gui=True,
                 num_seconds=100000,
-                reward_fn=rewards.max_WAVE_reward_fn,
+                reward_fn=rewards.impedance_reward,
                 min_green=30,
                 max_green=60
                 )
