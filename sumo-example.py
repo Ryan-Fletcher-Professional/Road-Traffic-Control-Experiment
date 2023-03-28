@@ -165,7 +165,7 @@ def plot_durations(show_result=False):
 
 def plot_rewards(show_result=False):
     plt.figure(2)
-    steps_t = torch.tensor(steps, dtype=torch.float)
+    steps_t = torch.tensor(steps,dtype=torch.int64)
     rewards_t = torch.tensor(rewards, dtype=torch.float)
     if show_result:
         plt.title('Result')
@@ -241,6 +241,7 @@ if torch.cuda.is_available():
 else:
     num_episodes = 50
 
+
 for i_episode in range(num_episodes):
     # Initialize the environment and get it's state
     state, info = env.reset()
@@ -272,6 +273,10 @@ for i_episode in range(num_episodes):
         for key in policy_net_state_dict:
             target_net_state_dict[key] = policy_net_state_dict[key]*TAU + target_net_state_dict[key]*(1-TAU)
         target_net.load_state_dict(target_net_state_dict)
+
+        rewards.append(reward)
+        steps.append(steps_done)
+        plot_rewards()
 
         if done:
             episode_durations.append(t + 1)
