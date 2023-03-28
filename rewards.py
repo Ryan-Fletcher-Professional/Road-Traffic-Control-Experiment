@@ -2,9 +2,6 @@ from math import e
 
 # Calculates maximum number of waiting and approaching vehicles
 def max_WAVE_reward_fn(traffic_signal):
-    if traffic_signal.last_reward == None:
-        traffic_signal.last_reward = 0
-
     max_so_far = 0.0
     for lane in traffic_signal.lanes:
         num_wave = traffic_signal.sumo.lane.getLastStepHaltingNumber(lane) + traffic_signal.sumo.lane.getLastStepVehicleNumber(lane) 
@@ -27,9 +24,7 @@ def my_reward_fn(traffic_signal):
 def impedance_reward(traffic_signal):
     beta = 5
     max_so_far = 0.0
-    
-    if traffic_signal.last_reward == None:
-        traffic_signal.last_reward = 0
+   
     for lane in traffic_signal.lanes:
         impedance = (traffic_signal.sumo.lane.getLastStepHaltingNumber(lane) \
             + traffic_signal.sumo.lane.getLastStepVehicleNumber(lane)) / e ** (beta * traffic_signal.get_average_speed())
@@ -37,7 +32,8 @@ def impedance_reward(traffic_signal):
             max_so_far = impedance
 
     for lane in traffic_signal.out_lanes:
-        impedance = (traffic_signal.sumo.lane.getLastStepVehicleNumber(lane)) / e ** (beta * traffic_signal.get_average_speed())
+        impedance = (traffic_signal.sumo.lane.getLastStepVehicleNumber(lane) \
+            + traffic_signal.sumo.lane.getLastStepHaltingNumber(lane))  / e ** (beta * traffic_signal.get_average_speed())
         if(impedance > max_so_far):
             max_so_far = impedance
 
