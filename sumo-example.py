@@ -42,11 +42,15 @@ env = gym.make('sumo-rl-v0',
 # set up matplotlib
 is_ipython = 'inline' in matplotlib.get_backend()
 if is_ipython:
-    from IPython import display
+    # https://ipython.readthedocs.io/en/stable/api/generated/IPython.display.html#IPython.display.display
+    from IPython import display 
 
+# Turn on interactive mode to plot onto the screen
+# https://matplotlib.org/3.1.1/tutorials/introductory/usage.html#sphx-glr-tutorials-introductory-usage-py
 plt.ion()
 
 # if gpu is to be used
+# Compute Unified Device Architecture (CUDA) is an NVIDIA API for general purpose computing on GPUs
 device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
 
 Transition = namedtuple('Transition',
@@ -67,6 +71,7 @@ class ReplayMemory(object):
     def __len__(self):
         return len(self.memory)
 
+# nn.Module is the base class for all NNs, has 3 linear layers
 class DQN(nn.Module):
 
     def __init__(self, n_observations, n_actions):
@@ -104,9 +109,9 @@ n_actions = env.action_space.n
 state, info = env.reset()
 n_observations = len(state)
 
-policy_net = DQN(n_observations, n_actions).to(device)
-target_net = DQN(n_observations, n_actions).to(device)
-target_net.load_state_dict(policy_net.state_dict())
+policy_net = DQN(n_observations, n_actions).to(device) # Cast the DQN parameters and buffers and move them to the device
+target_net = DQN(n_observations, n_actions).to(device) # Cast the DQN parameters and buffers and move them to the device
+target_net.load_state_dict(policy_net.state_dict())    # Copy parameters and buffers from the state_dict of policy_net into the target_net
 
 optimizer = optim.AdamW(policy_net.parameters(), lr=LR, amsgrad=True)
 memory = ReplayMemory(10000)
@@ -124,13 +129,14 @@ def select_action(state):
             # t.max(1) will return the largest column value of each row.
             # second column on max result is index of where max element was
             # found, so we pick action with the larger expected reward.
-            return policy_net(state).max(1)[1].view(1, 1)
+            return policy_net(state).max(1)[1].view(1,1)
     else:
         return torch.tensor([[env.action_space.sample()]], device=device, dtype=torch.long)
 
 
 episode_durations = []
-
+steps = []
+rewards = []
 
 def plot_durations(show_result=False):
     plt.figure(1)
@@ -149,6 +155,33 @@ def plot_durations(show_result=False):
         means = torch.cat((torch.zeros(99), means))
         plt.plot(means.numpy())
 
+    plt.pause(0.001)  # pause a bit so that plots are updated
+    if is_ipython:
+        if not show_result:
+            display.display(plt.gcf())
+            display.clear_output(wait=True)
+        else:
+            display.display(plt.gcf())
+
+def plot_rewards(show_result=False):
+    plt.figure(2)
+    steps_t = torch.tensor(steps, dtype=torch.float)
+    rewards_t = torch.tensor(rewards, dtype=torch.float)
+    if show_result:
+        plt.title('Result')
+    else:
+        plt.clf()
+        plt.title('Training...')
+    plt.xlabel('Step')
+    plt.ylabel('Reward')
+    plt.plot(steps_t.numpy(), rewards_t.numpy())
+
+    # Take 100 episode averages and plot them too
+    if len(rewards_t) >= 100:
+        means = rewards_t.unfold(0, 100, 1).mean(1).view(-1)
+        means = torch.cat((torch.zeros(99), means))
+        plt.plot(means.numpy())
+    
     plt.pause(0.001)  # pause a bit so that plots are updated
     if is_ipython:
         if not show_result:
@@ -242,11 +275,13 @@ for i_episode in range(num_episodes):
 
         if done:
             episode_durations.append(t + 1)
-            plot_durations()
+            rewards.append(reward)
+            steps.append(steps_done)
+            plot_rewards()
             break
 
 print('Complete')
-plot_durations(show_result=True)
+plot_rewards(show_result=True)
 plt.ioff()
 plt.show()
                
