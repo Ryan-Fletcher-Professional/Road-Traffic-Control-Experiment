@@ -25,19 +25,19 @@ import torch.nn.functional as F
 # create random generator
 rng = np.random.default_rng(seed=98765)
 
-#root = tk.Tk()
-#root.withdraw()
+root = tk.Tk()
+root.withdraw()
 directory = ""
-#directory = filedialog.askdirectory(title="Select Traffic Data Directory")
-#files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
-#if len(files) < 2:
-#    print("Less than 2 files.")
-#    exit(0)
+directory = filedialog.askdirectory(title="Select Traffic Data Directory")
+files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
+if len(files) < 2:
+    print("Less than 2 files.")
+    exit(0)
 
 env = gym.make('sumo-rl-v0',
-                net_file="C:\\mathew\\Amherst\\Spring2023\\Neural_Networks\\gym-examples\\sumo_rl_repo\\nets\\2x2grid\\2x2.net.xml",#files[0].name,
-                route_file="C:\\mathew\\Amherst\\Spring2023\\Neural_Networks\\gym-examples\\sumo_rl_repo\\nets\\2x2grid\\2x2.rou.xml",#files[1].name,
-                out_csv_name="C:\\mathew\\Amherst\\Spring2023\\Neural_Networks\\gym-examples\\sumo_rl_repo\\nets\\2x2grid" + directory+"\\output.csv",
+                net_file=files[0].name,
+                route_file=files[1].name,
+                out_csv_name=directory+"\\output.csv",
                 num_seconds=100000,
                 use_gui=False,
                 reward_fn=rewards.impedance_reward,
