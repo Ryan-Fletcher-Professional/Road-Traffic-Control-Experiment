@@ -6,6 +6,8 @@ import tkinter as tk
 from tkinter import filedialog
 from collections import namedtuple, deque
 from itertools import count
+import numpy as np
+from datetime import datetime
 
 import gymnasium as gym
 import sumo_rl
@@ -20,8 +22,12 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
+# create random generator
+rng = np.random.default_rng(seed=98765)
+
 root = tk.Tk()
 root.withdraw()
+directory = ""
 directory = filedialog.askdirectory(title="Select Traffic Data Directory")
 files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
 if len(files) < 2:
@@ -33,7 +39,7 @@ env = gym.make('sumo-rl-v0',
                 route_file=files[1].name,
                 out_csv_name=directory+"\\output.csv",
                 num_seconds=100000,
-                use_gui=True,
+                use_gui=False,
                 reward_fn=rewards.impedance_reward,
                 min_green=30,
                 max_green=60
@@ -76,16 +82,24 @@ class DQN(nn.Module):
 
     def __init__(self, n_observations, n_actions):
         super(DQN, self).__init__()
-        self.layer1 = nn.Linear(n_observations, 128)
-        self.layer2 = nn.Linear(128, 128)
-        self.layer3 = nn.Linear(128, n_actions)
+        self.layer1 = nn.Linear(n_observations, 256)
+        self.layer2 = nn.Linear(256, 1024)
+        self.layer3 = nn.RNN(1024, 256, 1)
+        self.layer4 = nn.Linear(256, n_actions)
 
     # Called with either one element to determine next action, or a batch
     # during optimization. Returns tensor([[left0exp,right0exp]...]).
     def forward(self, x):
-        x = F.relu(self.layer1(x))
-        x = F.relu(self.layer2(x))
-        return self.layer3(x)
+        h0 = F.relu(self.layer1(x))
+        h1 = F.relu(self.layer2(h0))
+        if(h0.size()[0] != 1):
+            randomNums = rng.integers(low=0, high=h0.size()[1]-1, size=h0.size()[1])
+            indices = torch.tensor([randomNums])
+            compressedh0 = torch.gather(h0, dim=1, index=indices)
+            h2 = self.layer3(h1, compressedh0)
+        else:
+            h2 = self.layer3(h1, h0)
+        return self.layer4(h2[0])
 
 
 # BATCH_SIZE is the number of transitions sampled from the replay buffer
@@ -282,7 +296,7 @@ for i_episode in range(num_episodes):
             episode_durations.append(t + 1)
             rewards.append(reward)
             steps.append(steps_done)
-            plot_rewards()
+            #plot_rewards()
             break
 
 print('Complete')
