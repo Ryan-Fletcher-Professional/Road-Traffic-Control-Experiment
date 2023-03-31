@@ -20,6 +20,10 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
+# from pettingzoo import AECEnv
+# from pettingzoo.utils import agent_selector, wrappers
+# from pettingzoo.utils.conversions import parallel_wrapper_fn
+
 root = tk.Tk()
 root.withdraw()
 directory = filedialog.askdirectory(title="Select Traffic Data Directory")
@@ -28,7 +32,7 @@ if len(files) < 2:
     print("Less than 2 files.")
     exit(0)
 
-env = gym.make('sumo-rl-v0',
+env = sumo_rl.parallel_env(
                 net_file=files[0].name,
                 route_file=files[1].name,
                 out_csv_name=directory+"\\output.csv",
@@ -104,10 +108,10 @@ TAU = 0.005
 LR = 1e-4
 
 # Get number of actions from gym action space
-n_actions = env.action_space.n
+n_actions = len(env.action_spaces)
 # Get the number of state observations
-state, info = env.reset()
-n_observations = len(state)
+observations = env.reset()
+n_observations = len(observations)
 
 policy_net = DQN(n_observations, n_actions).to(device) # Cast the DQN parameters and buffers and move them to the device
 target_net = DQN(n_observations, n_actions).to(device) # Cast the DQN parameters and buffers and move them to the device
@@ -131,12 +135,12 @@ def select_action(state):
             # found, so we pick action with the larger expected reward.
             return policy_net(state).max(1)[1].view(1,1)
     else:
-        return torch.tensor([[env.action_space.sample()]], device=device, dtype=torch.long)
+        return torch.tensor([[env.action_space(agent).sample()]], device=device, dtype=torch.long)
 
 
 episode_durations = []
 steps = []
-rewards = []
+rewards_list = []
 
 def plot_durations(show_result=False):
     plt.figure(1)
@@ -163,10 +167,16 @@ def plot_durations(show_result=False):
         else:
             display.display(plt.gcf())
 
+def flatten_custom(tdL):
+    ret = []
+    for unflat in tdL:
+        ret.append(sum(unflat) / len(unflat))
+    return ret
+
 def plot_rewards(show_result=False):
     plt.figure(2)
     steps_t = torch.tensor(steps,dtype=torch.int64)
-    rewards_t = torch.tensor(rewards, dtype=torch.float)
+    rewards_t = torch.tensor(flatten_custom(rewards_list), dtype=torch.float)
     if show_result:
         plt.title('Result')
     else:
@@ -244,21 +254,23 @@ else:
 
 for i_episode in range(num_episodes):
     # Initialize the environment and get it's state
-    state, info = env.reset()
-    state = torch.tensor(state, dtype=torch.float32, device=device).unsqueeze(0)
+    observations = env.reset()
+    state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
     for t in count():
-        action = select_action(state)
-        observation, reward, terminated, truncated, _ = env.step(action.item())
-        reward = torch.tensor([reward], device=device)
+        while env.agents:
+            actions = {agent: env.action_space(agent).sample() for agent in env.agents}  # this is where you would insert your policy
+            observations, rewards_new, terminations, truncations, infos = env.step(actions)
+        #observation, reward, terminated, truncated, _ = env.step(actions)
+        rewards_list.append(torch.tensor([rewards_new], device=device))  # make sure works with multi-agent tensor
         done = terminated or truncated
 
         if terminated:
             next_state = None
         else:
-            next_state = torch.tensor(observation, dtype=torch.float32, device=device).unsqueeze(0)
+            next_state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
 
         # Store the transition in memory
-        memory.push(state, action, next_state, reward)
+        memory.push(state, actions, next_state, rewards_new)
 
         # Move to the next state
         state = next_state
@@ -274,13 +286,13 @@ for i_episode in range(num_episodes):
             target_net_state_dict[key] = policy_net_state_dict[key]*TAU + target_net_state_dict[key]*(1-TAU)
         target_net.load_state_dict(target_net_state_dict)
 
-        rewards.append(reward)
+        rewards_list.append(rewards_new)
         steps.append(steps_done)
         plot_rewards()
 
         if done:
             episode_durations.append(t + 1)
-            rewards.append(reward)
+            rewards_list.append(rewards_new)
             steps.append(steps_done)
             plot_rewards()
             break
