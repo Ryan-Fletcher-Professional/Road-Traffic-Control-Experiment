@@ -11,6 +11,7 @@ from datetime import datetime
 
 import gymnasium as gym
 import sumo_rl
+import sys # getsysteminfo can be used to check memory usage
 
 import rewards
 
@@ -24,6 +25,7 @@ import torch.nn.functional as F
 
 # create random generator
 rng = np.random.default_rng(seed=98765)
+random.seed("98765")
 
 root = tk.Tk()
 root.withdraw()
