@@ -119,11 +119,12 @@ EPS_DECAY = 1000
 TAU = 0.005
 LR = 1e-4
 
-# Get number of actions from gym action space
-n_actions = len(env.action_spaces)
 # Get the number of state observations
 observations = env.reset()
 #print(observations)
+# Get number of actions from gym action space
+n_actions = np.sum([env.action_space(a).n for a in env.agents])
+#print("\nActions: ", n_actions)
 n_observations = len(observations) * len(list(observations.values())[0])
 #print("\nObservations ", n_observations)
 
@@ -136,7 +137,7 @@ memory = ReplayMemory(10000)
 
 steps_done = 0
 
-def select_action(state, agent):
+def select_actions(state):
     global steps_done
     sample = random.random()
     eps_threshold = EPS_END + (EPS_START - EPS_END) * \
@@ -147,9 +148,17 @@ def select_action(state, agent):
             # t.max(1) will return the largest column value of each row.
             # second column on max result is index of where max element was
             # found, so we pick action with the larger expected reward.
-            return policy_net(state).max(1)[1].view(1,1)
+            net = policy_net(state)
+            #print("\nNet: ", net)
+            actions = {}
+            for i in range(env.num_agents):
+                actions[str(i)] = 0 if net[0][2*i].item() >= net[0][(2*i)+1].item() else 1
+                # MAY WANT TO CHANGE NN OUTPUT LAYER TO env.num_agents AND READ +/-
+            return actions
     else:
-        return torch.tensor([[env.action_space(agent).sample()]], device=device, dtype=torch.long)
+        actions = {agent: torch.tensor([[env.action_space(agent).sample()]], device=device, dtype=torch.long)[0].item() for agent in env.agents}
+        #print("\nActions: ", actions)
+        return actions
 
 
 episode_durations = []
@@ -184,7 +193,9 @@ def plot_durations(show_result=False):
 def plot_rewards(show_result=False):
     plt.figure(2)
     steps_t = torch.tensor(steps,dtype=torch.int64)
-    rewards_t = torch.tensor(rewards, dtype=torch.float)
+    rewards_t = torch.tensor([], dtype=torch.float)
+    for reward in rewards:
+        rewards_t = torch.cat((rewards_t, torch.unsqueeze(reward, 0)))
     if show_result:
         plt.title('Result')
     else:
@@ -193,12 +204,14 @@ def plot_rewards(show_result=False):
     plt.xlabel('Step')
     plt.ylabel('Reward')
     plt.plot(steps_t.numpy(), rewards_t.numpy())
+    #for i in range(len(rewards_t)):  # Use this to get number labels for the intersections
+        #plt.plot(steps_t.numpy(), rewards_t[i].numpy(), str(i))
 
     # Take 100 episode averages and plot them too
-    if len(rewards_t) >= 100:
-        means = rewards_t.unfold(0, 100, 1).mean(1).view(-1)
-        means = torch.cat((torch.zeros(99), means))
-        plt.plot(means.numpy())
+    # if len(rewards_t) >= 100:
+    #     means = rewards_t.unfold(0, 100, 1).mean(1).view(-1)
+    #     means = torch.cat((torch.zeros(99), means))
+    #     plt.plot(means.numpy())
     
     plt.pause(0.001)  # pause a bit so that plots are updated
     if is_ipython:
@@ -241,7 +254,7 @@ def optimize_model():
     with torch.no_grad():
         next_state_values[non_final_mask] = target_net(non_final_next_states).max(1)[0]
     # Compute the expected Q values
-    expected_state_action_values = (next_state_values * GAMMA) + reward_batch
+    expected_state_action_values = (next_state_values * GAMMA) + reward_batch               # MAY NEED TO RESHAPE/COMPRESS
 
     # Compute Huber loss
     criterion = nn.SmoothL1Loss()
@@ -270,27 +283,38 @@ for i_episode in range(num_episodes):
     # print("\nObservations flattened: ", observations)
     states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
     for t in count():
-        while env.agents:
-            actions = {}
-            for agent in env.agents:
-                actions[agent] = select_action(, agent)
+        #while env.agents:
+        actions = select_actions(states)
+        # for agent in env.agents:
+        #     actions[agent] = None#select_action(, agent)
             # actions = {agent: env.action_space(agent).sample() for agent in env.agents}  # this is where you would insert your policy
-        observations, rewards_new, terminations, truncations, infos = env.step(actions)
+        obs, rews, terminations, truncations, infos = env.step(actions)
+        #print("\nRewards: ", rews)
+        observations = np.array([], dtype=np.float32)
+        for i in range(env.num_agents):
+            observations = np.concatenate((observations, obs[str(i)]))
+        rewards_new = []
+        for i in range(env.num_agents):
+            rewards_new.append(rews[str(i)])
+        #print("\nTerminations: ", terminations)
+        #print("\nTruncations: ", truncations)
+        terminated = True if True in list(terminations.values()) else False
+        truncated = True if True in list(truncations.values()) else False
         # action = select_action(state)
         # observation, reward, terminated, truncated, _ = env.step(action.item())
-        reward = torch.tensor([reward], device=device)
+        reward = torch.tensor(rewards_new, device=device)
         done = terminated or truncated
 
         if terminated:
             next_state = None
         else:
-            next_state = torch.tensor(observation, dtype=torch.float32, device=device).unsqueeze(0)
+            next_state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
 
         # Store the transition in memory
-        memory.push(state, action, next_state, reward)
+        memory.push(states, actions, next_state, reward)
 
         # Move to the next state
-        state = next_state
+        states = next_state
 
         # Perform one step of the optimization (on the policy network)
         optimize_model()
@@ -309,9 +333,9 @@ for i_episode in range(num_episodes):
 
         if done:
             episode_durations.append(t + 1)
-            rewards.append(reward)
-            steps.append(steps_done)
-            #plot_rewards()
+            #rewards.append(reward)
+            #steps.append(steps_done)
+            #plot_rewards()             # UNCOMMENT???
             break
 
 print('Complete')
