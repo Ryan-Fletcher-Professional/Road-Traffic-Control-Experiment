@@ -130,7 +130,8 @@ agents_list = [agent for agent in env.agents]
 # Get number of actions from gym action space
 n_actions = np.sum([env.action_space(a).n for a in env.agents])
 #print("\nActions: ", n_actions)
-n_observations = len(observations) * len(list(observations.values())[0])
+n_observations = sum([len(list(observations.values())[i]) for i in range(len(list(observations.values())))])
+# n_observations = len(observations) * len(list(observations.values())[0])        # FIX THIS
 #print("\nObservations ", n_observations)
 
 policy_net = DQN(n_observations, n_actions).to(device) # Cast the DQN parameters and buffers and move them to the device
