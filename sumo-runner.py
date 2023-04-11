@@ -121,6 +121,11 @@ LR = 1e-4
 
 # Get the number of state observations
 observations = env.reset()
+
+agents_list = [agent for agent in env.agents]
+# Dictionaries containing agent data aren't necessarily consistently ordered.
+# Using agents_list.index(agent) should allow an arbitrary but consistent ordering of the intersections in the output layer of the NN.
+
 #print(observations)
 # Get number of actions from gym action space
 n_actions = np.sum([env.action_space(a).n for a in env.agents])
@@ -151,9 +156,9 @@ def select_actions(state):
             net = policy_net(state)
             #print("\nNet: ", net)
             actions = {}
-            for i in range(env.num_agents):
-                actions[str(i)] = 0 if net[0][2*i].item() >= net[0][(2*i)+1].item() else 1
-                # MAY WANT TO CHANGE NN OUTPUT LAYER TO env.num_agents AND READ +/-
+            for agent in env.agents:
+                actions[agent] = 0 if net[0][2*agents_list.index(agent)].item() >= net[0][(2*agents_list.index(agent))+1].item() else 1
+                # CHANGE NN OUTPUT LAYER SIZE TO env.num_agents AND READ +/-???
             return actions
     else:
         actions = {agent: torch.tensor([[env.action_space(agent).sample()]], device=device, dtype=torch.long)[0].item() for agent in env.agents}
@@ -276,9 +281,10 @@ else:
 for i_episode in range(num_episodes):
     # Initialize the environment and get it's state
     obs = env.reset()
+    # print("\nObs: ", obs)
     observations = np.array([], dtype=np.float32)
-    for i in range(env.num_agents):
-        observations = np.concatenate((observations, obs[str(i)]))
+    for agent in env.agents:
+        observations = np.concatenate((observations, obs[agent]))
     # print("\nAgents: ", env.agents)
     # print("\nObservations flattened: ", observations)
     states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
@@ -291,11 +297,11 @@ for i_episode in range(num_episodes):
         obs, rews, terminations, truncations, infos = env.step(actions)
         #print("\nRewards: ", rews)
         observations = np.array([], dtype=np.float32)
-        for i in range(env.num_agents):
-            observations = np.concatenate((observations, obs[str(i)]))
+        for agent in env.agents:
+            observations = np.concatenate((observations, obs[agent]))
         rewards_new = []
-        for i in range(env.num_agents):
-            rewards_new.append(rews[str(i)])
+        for agent in env.agents:
+            rewards_new.append(rews[agent])
         #print("\nTerminations: ", terminations)
         #print("\nTruncations: ", truncations)
         terminated = True if True in list(terminations.values()) else False
