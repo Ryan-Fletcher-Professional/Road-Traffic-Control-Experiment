@@ -282,9 +282,12 @@ for i_episode in range(num_episodes):
     # Initialize the environment and get it's state
     obs = env.reset()
     # print("\nObs: ", obs)
+    obs_lists = [[] for i in range(env.num_agents)]
+    for agent in env.agents:  # Sort observations into proper agent ordering
+        obs_lists[agents_list.index(agent)] = obs[agent]
     observations = np.array([], dtype=np.float32)
-    for agent in env.agents:
-        observations = np.concatenate((observations, obs[agent]))
+    for ob in obs_lists:  # Flatten observations into ordered inputs for NN
+        observations = np.concatenate((observations, ob))
     # print("\nAgents: ", env.agents)
     # print("\nObservations flattened: ", observations)
     states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
@@ -296,12 +299,18 @@ for i_episode in range(num_episodes):
             # actions = {agent: env.action_space(agent).sample() for agent in env.agents}  # this is where you would insert your policy
         obs, rews, terminations, truncations, infos = env.step(actions)
         #print("\nRewards: ", rews)
+        obs_lists = [[] for i in range(env.num_agents)]
+        for agent in env.agents:  # Sort observations into proper agent ordering
+            obs_lists[agents_list.index(agent)] = obs[agent]
         observations = np.array([], dtype=np.float32)
+        for ob in obs_lists:  # Flatten observations into ordered inputs for NN
+            observations = np.concatenate((observations, ob))
+        rew_lists = [[] for i in range(env.num_agents)]
         for agent in env.agents:
-            observations = np.concatenate((observations, obs[agent]))
+                rew_lists[agents_list.index(agent)] = rews[agent]
         rewards_new = []
-        for agent in env.agents:
-            rewards_new.append(rews[agent])
+        for r in rew_lists:
+            rewards_new.append(r)
         #print("\nTerminations: ", terminations)
         #print("\nTruncations: ", truncations)
         terminated = True if True in list(terminations.values()) else False
