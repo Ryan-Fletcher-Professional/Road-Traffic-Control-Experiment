@@ -131,6 +131,13 @@ memory = ReplayMemory(10000)
 
 steps_done = 0
 
+obs = observations
+observations = np.array([], dtype=np.float32)
+for agent in env.agents:
+    observations = np.concatenate((observations, obs[agent]), axis=None)
+        
+states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
+
 def select_actions(states):
     global steps_done
     sample = random.random()
@@ -189,15 +196,25 @@ def optimize_model():
     # on the "older" target_net; selecting their best reward with max(1)[0].
     # This is merged based on the mask, such that we'll have either the expected
     # state value or 0 in case the state was final.
-    next_state_values = torch.zeros(BATCH_SIZE, device=device)
+    next_state_values = torch.zeros(BATCH_SIZE, env.num_agents, device=device)
     with torch.no_grad():
-        next_state_values[non_final_mask] = target_net(non_final_next_states).max(1)[0]
+        opt_actions = {}
+        net_out = target_net(non_final_next_states)
+        for i in range(BATCH_SIZE):
+            actions = {}
+            agent_action_index = 0
+            for agent in env.agents:
+                actions_number = env.action_space(agent).n
+                opt_action_Q = net_out.numpy()[i][agent_action_index:agent_action_index+actions_number].max()
+                agent_action_index += actions_number
+                actions[agent] = opt_action_Q 
+            opt_actions[i] = actions
+        next_state_values[non_final_mask] = torch.Tensor([list(dictionary.values()) for dictionary in [opt_actions[index] for index in opt_actions]]) 
     # Compute the expected Q values
-    expected_state_action_values = (next_state_values * GAMMA) + reward_batch.mean(1)            
-
+    expected_state_action_values = (next_state_values * GAMMA) + reward_batch
     # Compute Huber loss
     criterion = nn.SmoothL1Loss()
-    loss = criterion(state_action_values, expected_state_action_values.unsqueeze(1))
+    loss = criterion(state_action_values, expected_state_action_values)
 
     # Optimize the model
     optimizer.zero_grad()
@@ -211,8 +228,52 @@ if torch.cuda.is_available():
 else:
     num_episodes = 50
 
+for t in count():
 
-for i_episode in range(num_episodes):
+    actions = select_actions(states)
+    obs, rews, terminations, truncations, infos = env.step(actions)
+    observations = np.array([], dtype=np.float32)
+    for agent in env.agents:
+        observations = np.concatenate((observations, obs[agent]), axis=None)
+    rewards_new = []
+    for agent in env.agents:
+        rewards_new.append(rews[agent])
+    terminated = True if True in list(terminations.values()) else False
+    truncated = True if True in list(truncations.values()) else False
+    reward = torch.tensor(rewards_new, device=device)
+    done = terminated or truncated
+
+    if terminated:
+        next_state = None
+    else:
+        next_state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
+
+    # Store the transition in memory
+    memory.push(states, actions, next_state, reward)
+
+    # Move to the next state
+    states = next_state
+
+    # Perform one step of the optimization (on the policy network)
+    optimize_model()
+
+    # Soft update of the target network's weights
+    # θ′ ← τ θ + (1 −τ )θ′
+    target_net_state_dict = target_net.state_dict()
+    policy_net_state_dict = policy_net.state_dict()
+    for key in policy_net_state_dict:
+        target_net_state_dict[key] = policy_net_state_dict[key]*TAU + target_net_state_dict[key]*(1-TAU)
+    target_net.load_state_dict(target_net_state_dict)
+
+    steps.append(steps_done)
+
+    if done:
+        episode_durations.append(t + 1)
+        break
+
+
+
+for i_episode in range(1, num_episodes):
     # Initialize the environment and get it's state
 
     obs = env.reset()
