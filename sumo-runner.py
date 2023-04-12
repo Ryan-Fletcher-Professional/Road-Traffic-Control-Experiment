@@ -53,7 +53,7 @@ env = sumo_rl.parallel_env(
                            num_seconds=100000,
                            begin_time=begin_time_s,
                            use_gui=True,
-                           reward_fn=rewards.impedance_reward
+                           reward_fn=rewards.fully_coordinated_impedance_reward
                            )
 
 # if gpu is to be used
