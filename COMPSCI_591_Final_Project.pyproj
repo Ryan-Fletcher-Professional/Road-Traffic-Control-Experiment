@@ -32,10 +32,13 @@
   <ItemGroup>
     <Folder Include="networks\" />
     <Folder Include="output\" />
+    <Folder Include="powershell\" />
     <Folder Include="routes\" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="networks\ingolstadt21.net.xml" />
+    <Content Include="powershell\junctions" />
+    <Content Include="powershell\networks.ps1" />
     <Content Include="readme.md" />
     <Content Include="routes\ingolstadt21.rou.xml" />
   </ItemGroup>
