@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>sumo-runner.py</StartupFile>
+    <StartupFile>fixed_time_TSC\fixed_ts.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -13,7 +13,7 @@
     <RootNamespace>COMPSCI_591_Final_Project</RootNamespace>
     <IsWindowsApplication>True</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"networks\ingolstadt21.net.xml" "routes\ingolstadt21.rou.xml" 57600 </CommandLineArguments>
+    <CommandLineArguments>"C:\\Users\\jancy\\source\\repos\\COMPSCI_591_Final_Project\\sumo_networks\\ingolstadt21.sumocfg"</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -25,21 +25,26 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="fixed_time_TSC\fixed_ts.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rewards.py" />
     <Compile Include="sumo-runner.py" />
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="networks\" />
+    <Folder Include="sumo_networks\" />
+    <Folder Include="fixed_time_TSC\" />
     <Folder Include="output\" />
     <Folder Include="powershell\" />
-    <Folder Include="routes\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="networks\ingolstadt21.net.xml" />
-    <Content Include="powershell\junctions" />
+    <Content Include="output\fixed_ts.txt" />
+    <Content Include="powershell\junctions.txt" />
+    <Content Include="sumo_networks\ingolstadt21.net.xml" />
     <Content Include="powershell\networks.ps1" />
     <Content Include="readme.md" />
-    <Content Include="routes\ingolstadt21.rou.xml" />
+    <Content Include="sumo_networks\ingolstadt21.rou.xml" />
+    <Content Include="sumo_networks\ingolstadt21.sumocfg" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
