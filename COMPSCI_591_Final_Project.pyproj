@@ -26,7 +26,6 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="rewards.py" />
-    <Compile Include="sumo-runner-old.py" />
     <Compile Include="sumo-runner.py" />
   </ItemGroup>
   <ItemGroup>
