@@ -26,8 +26,8 @@ rng = np.random.default_rng(seed=98765)
 random.seed("98765")
 
 if(len(sys.argv) > 2):
-    netfile = sys.argv[1]
-    routefile = sys.argv[2]
+    net_file = sys.argv[1]
+    route_file = sys.argv[2]
     begin_time_s = int(sys.argv[3])
 else:
     root = tk.Tk()
@@ -40,15 +40,15 @@ else:
         exit(0)
     else:
         if(files[0].name.endswith("net.xml")):
-            netfile = files[0].name
-            routefile = files[1].name
+            net_file = files[0].name
+            route_file = files[1].name
         else:
-            netfile = files[1].name
-            routefile=files[0].name
+            net_file = files[1].name
+            route_file=files[0].name
 
 env = sumo_rl.parallel_env(
-                           net_file=netfile,
-                           route_file=routefile,
+                           net_file=net_file,
+                           route_file=route_file,
                            out_csv_name="output\\test-",
                            num_seconds=100000,
                            begin_time=begin_time_s,
