@@ -6,9 +6,10 @@ from collections import namedtuple, deque
 from itertools import count
 import numpy as np
 from datetime import datetime
-
+from tests.test1 import TestAgentOrderingConsistent
 import gymnasium as gym
 import sumo_rl
+from unittest import TestResult
 import sys # getsysteminfo can be used to check memory usage
 
 import rewards
@@ -229,12 +230,15 @@ else:
     num_episodes = 50
 
 for t in count():
-
     actions = select_actions(states)
     obs, rews, terminations, truncations, infos = env.step(actions)
     observations = np.array([], dtype=np.float32)
     for agent in env.agents:
         observations = np.concatenate((observations, obs[agent]), axis=None)
+    
+    test = TestAgentOrderingConsistent(param="".join(["," + agent for agent in env.agents]))
+    test.run()
+
     rewards_new = []
     for agent in env.agents:
         rewards_new.append(rews[agent])
