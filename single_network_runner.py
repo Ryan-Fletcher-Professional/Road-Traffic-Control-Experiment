@@ -21,15 +21,22 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
+
+"""This file runs a single large neural network that takes inputs from and controls all the traffic signals in the traffic network."""
+
+
 # create random generator
 rng = np.random.default_rng(seed=98765)
 random.seed("98765")
+
+DEFAULT_BEGIN_TIME = 1000
 
 if(len(sys.argv) > 2):
     net_file = sys.argv[1]
     route_file = sys.argv[2]
     begin_time_s = int(sys.argv[3])
 else:
+    begin_time_s = DEFAULT_BEGIN_TIME
     root = tk.Tk()
     root.withdraw()
     directory = ""
@@ -50,10 +57,10 @@ env = sumo_rl.parallel_env(
                            net_file=net_file,
                            route_file=route_file,
                            out_csv_name="output\\test-",
-                           num_seconds=100000,
+                           num_seconds=86400,  # 24 simulated hours per episode
                            begin_time=begin_time_s,
                            use_gui=True,
-                           reward_fn=rewards.single_agent_impedance_reward
+                           reward_fn=rewards.coordinated_mean_max_impedence_reward
                            )
 
 # if gpu is to be used
@@ -132,7 +139,7 @@ memory = ReplayMemory(10000)
 steps_done = 0
 
 obs = observations
-observations = np.array([], dtype=np.float32)
+observations = np.array([], dtype=np.float32)  # Flattened version of observations dictionary
 for agent in env.agents:
     observations = np.concatenate((observations, obs[agent]), axis=None)
         
