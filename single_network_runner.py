@@ -235,61 +235,18 @@ if torch.cuda.is_available():
 else:
     num_episodes = 50
 
-for t in count():
+for i_episode in range(0, num_episodes):
+    if i_episode > 0:
+        # Initialize the environment and get it's state
 
-    actions = select_actions(states)
-    obs, rews, terminations, truncations, infos = env.step(actions)
-    observations = np.array([], dtype=np.float32)
-    for agent in env.agents:
-        observations = np.concatenate((observations, obs[agent]), axis=None)
-    rewards_new = []
-    for agent in env.agents:
-        rewards_new.append(rews[agent])
-    terminated = True if True in list(terminations.values()) else False
-    truncated = True if True in list(truncations.values()) else False
-    reward = torch.tensor(rewards_new, device=device)
-    done = terminated or truncated
+        obs = env.reset()
+        observations = np.array([], dtype=np.float32)
 
-    if terminated:
-        next_state = None
-    else:
-        next_state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
+        for agent in env.agents:
+            observations = np.concatenate((observations, obs[agent]), axis=None)
 
-    # Store the transition in memory
-    memory.push(states, actions, next_state, reward)
+        states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
 
-    # Move to the next state
-    states = next_state
-
-    # Perform one step of the optimization (on the policy network)
-    optimize_model()
-
-    # Soft update of the target network's weights
-    # θ′ ← τ θ + (1 −τ )θ′
-    target_net_state_dict = target_net.state_dict()
-    policy_net_state_dict = policy_net.state_dict()
-    for key in policy_net_state_dict:
-        target_net_state_dict[key] = policy_net_state_dict[key]*TAU + target_net_state_dict[key]*(1-TAU)
-    target_net.load_state_dict(target_net_state_dict)
-
-    steps.append(steps_done)
-
-    if done:
-        episode_durations.append(t + 1)
-        break
-
-
-
-for i_episode in range(1, num_episodes):
-    # Initialize the environment and get it's state
-
-    obs = env.reset()
-    observations = np.array([], dtype=np.float32)
-
-    for agent in env.agents:
-        observations = np.concatenate((observations, obs[agent]), axis=None)
-
-    states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
     for t in count():
 
         actions = select_actions(states)
