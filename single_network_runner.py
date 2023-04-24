@@ -260,7 +260,6 @@ for i_episode in range(0, num_episodes):
 
         actions = select_actions(states)
         obs, rews, terminations, truncations, infos = env.step(actions)
-        observations = np.array([], dtype=np.float32)
         rewards_new = []
         for agent in env.agents:
             rewards_new.append(rews[agent])
@@ -277,11 +276,16 @@ for i_episode in range(0, num_episodes):
             else:
                 next_states[agent] = obs[agent] 
 
-        for agent in env.agents:
-            observations = np.concatenate((observations, next_states[agent]), axis=None)
-        
+        if all(done == True for done in dones.values()):
+            episode_durations.append(t + 1)
+            break
+
+        observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
+
         next_states_tensor = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
         
+
+
         # Store the transition in memory
         memory.push(states, actions, next_states_tensor, reward)
 
@@ -300,9 +304,5 @@ for i_episode in range(0, num_episodes):
         target_net.load_state_dict(target_net_state_dict)
 
         steps.append(steps_done)
-
-        if all(done == True for done in dones.values()):
-            episode_durations.append(t + 1)
-            break
 
 print('Complete')
