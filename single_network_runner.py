@@ -283,8 +283,6 @@ for i_episode in range(0, num_episodes):
         observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
 
         next_states_tensor = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
-        
-
 
         # Store the transition in memory
         memory.push(states, actions, next_states_tensor, reward)
