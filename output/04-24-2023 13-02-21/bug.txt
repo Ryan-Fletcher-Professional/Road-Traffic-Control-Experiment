@@ -1,0 +1,7 @@
+Sizes of tensors must match except in dimension 0. Expected size 403 but got size 0 for tensor number 61 in the list.
+Stack trace:
+ >  File "C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\single_network_runner.py", line 199, in optimize_model
+ >    non_final_next_states = torch.cat([s for s in batch.next_state
+ >  File "C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\single_network_runner.py", line 292, in <module> (Current frame)
+ >    optimize_model()
+Loaded '__main__
