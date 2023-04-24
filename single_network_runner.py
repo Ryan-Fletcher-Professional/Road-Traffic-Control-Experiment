@@ -58,10 +58,13 @@ else:
             net_file = files[1].name
             route_file=files[0].name
 
+network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
+
+
 env = sumo_rl.parallel_env(
                            net_file=net_file,
                            route_file=route_file,
-                           out_csv_name=output_dir + "\\",
+                           out_csv_name=output_dir + "\\" + network_name,
                            num_seconds=61600,  # 24 simulated hours per episode
                            begin_time=begin_time_s,
                            use_gui=True,
