@@ -4,3 +4,6 @@ https://github.com/eclipse/sumo/tree/main/docs/web/docs
 https://docs.python.org/3/library/xml.etree.elementtree.html
 https://sumo.dlr.de/docs/index.html
 https://github.com/LucasAlegre/sumo-rl
+
+TODO:
+Could collect extra statistics within reward functions like CO2 Emissions.
