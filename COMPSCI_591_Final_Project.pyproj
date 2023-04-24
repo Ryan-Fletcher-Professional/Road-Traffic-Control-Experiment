@@ -28,9 +28,10 @@
     <Compile Include="fixed_time_TSC\fixed_ts.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="multi_network_runner.py" />
     <Compile Include="other\module1.py" />
     <Compile Include="rewards.py" />
-    <Compile Include="sumo-runner.py" />
+    <Compile Include="single_network_runner.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
