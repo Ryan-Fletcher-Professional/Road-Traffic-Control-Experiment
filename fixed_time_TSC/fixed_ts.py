@@ -5,9 +5,16 @@ import traci.constants as tc
 import tkinter as tk
 from tkinter import filedialog
 import os
+from datetime import datetime
 import io
-from os import getcwd
+from os import mkdir, getcwd
 import sys
+
+
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S") + " fixed_time"
+mkdir(output_dir)
 
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
@@ -43,8 +50,8 @@ with open("powershell/junctions.txt", 'r') as junctions:
         traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 42, [tc.VAR_SPEED, tc.VAR_WAITING_TIME])
         print("Subscription Results for Junction " + junctionID + ": " + str(traci.junction.getContextSubscriptionResults(junctionID)))
 
-with io.open("output\\fixed_ts.txt", 'w+') as f:
-    for step in range(100000):
+with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
+    for step in range(100):
         print("Step is: " + str(step))
         traci.simulationStep()
         vehiclelist = traci.vehicle.getIDList()
