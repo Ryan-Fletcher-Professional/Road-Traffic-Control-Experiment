@@ -6,7 +6,7 @@ from collections import namedtuple, deque
 from itertools import count
 import numpy as np
 from datetime import datetime
-
+from os import mkdir, getcwd
 import gymnasium as gym
 import sumo_rl
 import sys # getsysteminfo can be used to check memory usage
@@ -23,6 +23,11 @@ import torch.nn.functional as F
 
 
 """This file runs a single large neural network that takes inputs from and controls all the traffic signals in the traffic network."""
+
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S")
+mkdir(output_dir)
 
 
 # create random generator
@@ -56,8 +61,8 @@ else:
 env = sumo_rl.parallel_env(
                            net_file=net_file,
                            route_file=route_file,
-                           out_csv_name="output\\test-",
-                           num_seconds=86400,  # 24 simulated hours per episode
+                           out_csv_name=output_dir + "\\",
+                           num_seconds=144000,  # 24 simulated hours per episode
                            begin_time=begin_time_s,
                            use_gui=True,
                            reward_fn=rewards.coordinated_mean_max_impedence_reward
@@ -252,26 +257,32 @@ for i_episode in range(0, num_episodes):
         actions = select_actions(states)
         obs, rews, terminations, truncations, infos = env.step(actions)
         observations = np.array([], dtype=np.float32)
-        for agent in env.agents:
-            observations = np.concatenate((observations, obs[agent]), axis=None)
         rewards_new = []
         for agent in env.agents:
             rewards_new.append(rews[agent])
-        terminated = True if True in list(terminations.values()) else False
-        truncated = True if True in list(truncations.values()) else False
         reward = torch.tensor(rewards_new, device=device)
-        done = terminated or truncated
 
-        if terminated:
-            next_state = None
-        else:
-            next_state = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
+        dones = {}
+        next_states = {}
+        for agent in env.agents:
+            dones[agent] = terminations[agent] or truncations[agent]
 
+        for agent in env.agents:
+            if dones[agent]:
+                next_states[agent] = None
+            else:
+                next_states[agent] = obs[agent] 
+
+        for agent in env.agents:
+            observations = np.concatenate((observations, next_states[agent]), axis=None)
+        
+        next_states_tensor = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
+        
         # Store the transition in memory
-        memory.push(states, actions, next_state, reward)
+        memory.push(states, actions, next_states_tensor, reward)
 
         # Move to the next state
-        states = next_state
+        states = next_states_tensor
 
         # Perform one step of the optimization (on the policy network)
         optimize_model()
@@ -286,7 +297,7 @@ for i_episode in range(0, num_episodes):
 
         steps.append(steps_done)
 
-        if done:
+        if all(done == True for done in dones.values()):
             episode_durations.append(t + 1)
             break
 
