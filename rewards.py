@@ -81,13 +81,17 @@ def coordinated_mean_max_impedence_reward(traffic_signal):
             signal = traffic_signal.env.traffic_signals[agent]
             max_so_far = 0.0
             for lane in signal.lanes:
+                num_emergency_stops = signal.sumo.simulation.getEmergencyStoppingVehiclesNumber()
+                weight = (beta * signal.get_average_speed()) if num_emergency_stops < 1 else (beta * signal.get_average_speed()) / num_emergency_stops
                 impedance = (signal.sumo.lane.getLastStepHaltingNumber(lane) \
-                    + signal.sumo.lane.getLastStepVehicleNumber(lane)) / e ** (beta * signal.get_average_speed())
+                    + signal.sumo.lane.getLastStepVehicleNumber(lane)) / e ** (weight)
                 if(impedance > max_so_far):
                     max_so_far = impedance
             for lane in signal.out_lanes:
+                num_emergency_stops = signal.sumo.simulation.getEmergencyStoppingVehiclesNumber()
+                weight = (beta * signal.get_average_speed()) if num_emergency_stops < 1 else (beta * signal.get_average_speed()) / num_emergency_stops
                 impedance = (signal.sumo.lane.getLastStepVehicleNumber(lane) \
-                    + signal.sumo.lane.getLastStepHaltingNumber(lane))  / e ** (beta * signal.get_average_speed())
+                    + signal.sumo.lane.getLastStepHaltingNumber(lane))  / e ** (weight)
                 if(impedance > max_so_far):
                     max_so_far = impedance
             mean_max += max_so_far
