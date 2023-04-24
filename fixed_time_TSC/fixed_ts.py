@@ -51,7 +51,7 @@ with open("powershell/junctions.txt", 'r') as junctions:
         print("Subscription Results for Junction " + junctionID + ": " + str(traci.junction.getContextSubscriptionResults(junctionID)))
 
 with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
-    for step in range(100):
+    for step in range(100000):
         print("Step is: " + str(step))
         traci.simulationStep()
         vehiclelist = traci.vehicle.getIDList()
