@@ -32,7 +32,7 @@ else:
         exit(0)
     sumo_cfg = files[0].name.replace('/', '\\')
 
-traci.start([sumolib.checkBinary("sumo"), "-c", sumo_cfg], label="init_connection")
+traci.start([sumolib.checkBinary("sumo"), "-c", sumo_cfg, "--begin", "57600"], label="init_connection")
 conn = traci.getConnection("init_connection")
 
 
@@ -52,7 +52,7 @@ with open("powershell/junctions.txt", 'r') as junctions:
         print("Subscription Results for Junction " + junctionID + ": " + str(traci.junction.getContextSubscriptionResults(junctionID)))
 
 with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
-    for step in range(100000):
+    for step in range(4000):
         print("Step is: " + str(step))
         traci.simulationStep()
         vehiclelist = traci.vehicle.getIDList()
