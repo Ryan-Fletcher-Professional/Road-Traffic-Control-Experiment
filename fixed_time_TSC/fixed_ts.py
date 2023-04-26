@@ -55,7 +55,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
                 vehicle_dict[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
             str(vehicle_dict)
             waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
-            f.write(str(step + begin_time) + " ")
+            f.write(str(step + int(begin_time)) + " ")
             f.write(str(sum(waiting_times)))
             f.write('\n')
     elif output_type == "--waitingTime":
@@ -69,7 +69,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
                 vehicle_dict[vehicle] = traci.vehicle.isStopped(vehicle)
             str(vehicle_dict)
             stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
-            f.write(str(step + begin_time) + " ")
+            f.write(str(step + int(begin_time)) + " ")
             f.write(len(stopped_vehicles))
             f.write('\n')
 traci.close()
