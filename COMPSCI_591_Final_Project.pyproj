@@ -30,13 +30,19 @@
     </Compile>
     <Compile Include="multi_network_runner.py" />
     <Compile Include="other\module1.py" />
+    <Compile Include="other\readLargeFile.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="rewards.py" />
     <Compile Include="single_network_runner.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="tools\filterElements.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="tools\" />
+    <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
     <Folder Include="other\" />
     <Folder Include="sumo_networks\" />
@@ -45,7 +51,7 @@
     <Folder Include="powershell\" />
   </ItemGroup>
   <ItemGroup>
-    <Content Include="output\fixed_ts.txt" />
+    <Content Include="output\fixed_time_ts on 04-25-2023 21-22-27\full_output.xml" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="sumo_networks\ingolstadt21.net.xml" />
     <Content Include="powershell\networks.ps1" />
