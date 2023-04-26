@@ -22,8 +22,9 @@ if(len(sys.argv) > 1):
     # Requires full file path, not relative file paths
     sumo_cfg = sys.argv[1]
     output_type = sys.argv[2]
+    begin_time = sys.argv[3]
 
-traci.start([sumolib.checkBinary("sumo"), "-c", sumo_cfg, "--begin", "57600"], label="init_connection")
+traci.start([sumolib.checkBinary("sumo"), "-c", sumo_cfg, "--begin", begin_time], label="init_connection")
 conn = traci.getConnection("init_connection")
 
 
@@ -54,7 +55,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
                 vehicle_dict[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
             str(vehicle_dict)
             waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
-            f.write(str(step) + " ")
+            f.write(str(step + begin_time) + " ")
             f.write(str(sum(waiting_times)))
             f.write('\n')
     elif output_type == "--waitingTime":
@@ -68,7 +69,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
                 vehicle_dict[vehicle] = traci.vehicle.isStopped(vehicle)
             str(vehicle_dict)
             stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
-            f.write(str(step) + " ")
+            f.write(str(step + begin_time) + " ")
             f.write(len(stopped_vehicles))
             f.write('\n')
 traci.close()
