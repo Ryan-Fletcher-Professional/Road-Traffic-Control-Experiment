@@ -57,7 +57,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             str(vehicle_dict)
             stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
             f.write(str(step + int(begin_time)) + " ")
-            f.write(len(stopped_vehicles))
+            f.write(str(len(stopped_vehicles)))
             
             f.write('\n')
     elif output_type == "--waitingTime":
