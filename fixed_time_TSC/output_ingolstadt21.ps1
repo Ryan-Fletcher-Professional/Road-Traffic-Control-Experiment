@@ -6,4 +6,4 @@ mkdir $directory                                                                
 $out_file = $directory + "\\full_output.xml"                                           # Creates new file name
 
 # Output various information about lanes, edges, junctions and traffic signals for the ingolstadt21 transportation network
-sumo-gui -n sumo_networks/ingolstadt21.net.xml -r sumo_networks/ingolstadt21.rou.xml --full-output $out_file --begin 57600 --end 61600
+sumo-gui -n sumo_networks/ingolstadt21.net.xml -r sumo_networks/ingolstadt21.rou.xml --full-output $out_file --begin 57600 --end 61600 --start
