@@ -26,7 +26,7 @@ import torch.nn.functional as F
 
 # Get string representation of current date and time
 now = datetime.now()
-output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S")
+output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S") + " adaptive"
 mkdir(output_dir)
 
 
