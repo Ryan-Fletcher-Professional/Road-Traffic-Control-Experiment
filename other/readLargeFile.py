@@ -1,4 +1,4 @@
-# The file full_output.xml is
+# The file full_output.xml is greater than 3 GB large.
 
 first_num_lines = 100
 xml_dir = r"output\fixed_time_ts on 04-25-2023 21-22-27\full_output.xml"
