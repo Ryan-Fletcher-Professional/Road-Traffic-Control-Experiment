@@ -51,12 +51,14 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             traci.simulationStep()
             vehiclelist = traci.vehicle.getIDList()
             vehicle_dict = {}
+            
             for vehicle in vehiclelist:
-                vehicle_dict[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
+                vehicle_dict[vehicle] = traci.vehicle.isStopped(vehicle)
             str(vehicle_dict)
-            waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
+            stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
             f.write(str(step + int(begin_time)) + " ")
-            f.write(str(sum(waiting_times)))
+            f.write(len(stopped_vehicles))
+            
             f.write('\n')
     elif output_type == "--waitingTime":
         f.write("Step Accumulated Waiting Time")
@@ -66,10 +68,10 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             vehiclelist = traci.vehicle.getIDList()
             vehicle_dict = {}
             for vehicle in vehiclelist:
-                vehicle_dict[vehicle] = traci.vehicle.isStopped(vehicle)
+                vehicle_dict[vehicle] = traci.vehicle.getAccumulatedWaitingTime(vehicle)
             str(vehicle_dict)
-            stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
+            waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
             f.write(str(step + int(begin_time)) + " ")
-            f.write(len(stopped_vehicles))
+            f.write(str(sum(waiting_times)))
             f.write('\n')
 traci.close()
