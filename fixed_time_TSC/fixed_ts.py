@@ -10,12 +10,6 @@ import io
 from os import mkdir, getcwd
 import sys
 
-
-# Get string representation of current date and time
-now = datetime.now()
-output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S") + " fixed_time"
-mkdir(output_dir)
-
 if "SUMO_HOME" in os.environ:
     tools = os.path.join(os.environ["SUMO_HOME"], "tools")
     sys.path.append(tools)
@@ -40,6 +34,13 @@ else:
 
 traci.start([sumolib.checkBinary("sumo"), "-c", sumo_cfg], label="init_connection")
 conn = traci.getConnection("init_connection")
+
+
+network_name = sumo_cfg[sumo_cfg.rindex('\\') + 1:sumo_cfg.index('.')]
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + now.strftime("%m-%d-%Y %H-%M-%S") + " " + network_name + " fixed_time_using_TraCI"
+mkdir(output_dir)
 
 # Here, Linux type file paths work too
 with open("powershell/junctions.txt", 'r') as junctions:       
