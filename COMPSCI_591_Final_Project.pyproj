@@ -13,7 +13,7 @@
     <RootNamespace>COMPSCI_591_Final_Project</RootNamespace>
     <IsWindowsApplication>True</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"C:\\Users\\jancy\\source\\repos\\COMPSCI_591_Final_Project\\sumo_networks\\ingolstadt21.net.xml" "C:\\Users\\jancy\\source\\repos\\COMPSCI_591_Final_Project\\sumo_networks\\ingolstadt21.rou.xml" 57600</CommandLineArguments>
+    <CommandLineArguments>-f "C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\output\fixed_time_ts on 04-25-2023 21-22-27\full_output.xml" -o C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\output\fixed_time_ts on 04-25-2023 21-22-27\filtered.xml -t edges</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
