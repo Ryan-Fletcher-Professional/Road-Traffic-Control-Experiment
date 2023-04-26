@@ -40,7 +40,7 @@ with open("powershell/junctions.txt", 'r') as junctions:
     junctionIDs = [line.strip() for line in junctions]
 
     for junctionID in junctionIDs:
-        traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 42, [tc.VAR_SPEED, tc.VAR_WAITING_TIME])
+        traci.junction.subscribeContext(junctionID, tc.CMD_GET_VEHICLE_VARIABLE, 3000, [tc.VAR_SPEED, tc.VAR_WAITING_TIME, tc.VAR_STOPSTATE])
         print("Subscription Results for Junction " + junctionID + ": " + str(traci.junction.getContextSubscriptionResults(junctionID)))
 
 with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f: 
@@ -73,5 +73,19 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
             f.write(str(step + int(begin_time)) + " ")
             f.write(str(sum(waiting_times)))
+            f.write('\n')
+    elif output_type == "--all":
+        f.write("Step Accumulated Waiting Time Mean Speed Number of Stopped Vehicles\n")
+        for step in range(4000):
+            print("Step is: " + str(step))
+            traci.simulationStep()
+            vehiclelist = traci.vehicle.getIDList()
+            waiting_times = [traci.vehicle.getAccumulatedWaitingTime(vehicle) for vehicle in vehiclelist]
+            num_stopped_vehicles = [vehicle for vehicle in vehiclelist if traci.vehicle.isStopped(vehicle)]
+            speeds = [traci.vehicle.getSpeed(vehicle) for vehicle in vehiclelist]
+            f.write(str(step + int(begin_time)) + " ")
+            f.write(str(sum(waiting_times)) + " ")
+            f.write(str(sum(speeds) / len(speeds)) + " ")
+            f.write(str(len(num_stopped_vehicles)))
             f.write('\n')
 traci.close()
