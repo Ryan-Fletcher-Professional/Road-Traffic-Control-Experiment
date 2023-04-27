@@ -46,7 +46,7 @@ with open("powershell/junctions.txt", 'r') as junctions:
 with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f: 
     if output_type == "--stopped":
         f.write("Step Number of Vehicles Stopped\n")
-        for step in range(4000):
+        for step in range(800):
             print("Step is: " + str(step))
             traci.simulationStep()
             vehiclelist = traci.vehicle.getIDList()
@@ -62,7 +62,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             f.write('\n')
     elif output_type == "--waitingTime":
         f.write("Step Accumulated Waiting Time\n")
-        for step in range(4000):
+        for step in range(800):
             print("Step is: " + str(step))
             traci.simulationStep()
             vehiclelist = traci.vehicle.getIDList()
@@ -76,7 +76,7 @@ with io.open(output_dir + "\\fixed_ts.txt", 'w+') as f:
             f.write('\n')
     elif output_type == "--all":
         f.write("Step Accumulated Waiting Time Mean Speed Number of Stopped Vehicles\n")
-        for step in range(4000):
+        for step in range(800):
             print("Step is: " + str(step))
             traci.simulationStep()
             vehiclelist = traci.vehicle.getIDList()
