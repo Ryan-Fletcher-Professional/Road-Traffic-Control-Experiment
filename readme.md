@@ -16,3 +16,4 @@ https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
 TODO:
 Use latest data model of Ingolstadt in our traffic simulation
 Could collect extra statistics within reward functions like CO2 Emissions.
+Complete the generation of the number of vehicles stopped and the system total waiting time for FTSC. Need to gather rest of the data.
