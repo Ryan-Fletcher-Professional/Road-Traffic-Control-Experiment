@@ -5,6 +5,13 @@ https://docs.python.org/3/library/xml.etree.elementtree.html
 https://sumo.dlr.de/docs/index.html
 https://github.com/LucasAlegre/sumo-rl
 https://sumo.dlr.de/docs/Data/Scenarios.html
+https://sumo.dlr.de/pydoc/traci.constants.html
+https://sumo.dlr.de/docs/Simulation/Output/index.html
+https://sumo.dlr.de/docs/Simulation/Output/FullOutput.html
+https://sumo.dlr.de/docs/Tools/Xml.html
+https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html
+https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
+https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
 
 TODO:
 Use latest data model of Ingolstadt in our traffic simulation
