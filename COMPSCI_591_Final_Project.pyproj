@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>multi_network_runner.py</StartupFile>
+    <StartupFile>custom_parallel_envs\ingolstadt21\true_online_sarsa_lambda.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -25,6 +25,7 @@
     <EnableUnmanagedDebugging>false</EnableUnmanagedDebugging>
   </PropertyGroup>
   <ItemGroup>
+    <Compile Include="custom_parallel_envs\ingolstadt21\true_online_sarsa_lambda.py" />
     <Compile Include="fixed_time_TSC\fixed_ts.py">
       <SubType>Code</SubType>
     </Compile>
@@ -40,7 +41,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="custom_parallel_envs\rewards.py" />
-    <Compile Include="single_network_runner.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
@@ -48,6 +48,7 @@
   </ItemGroup>
   <ItemGroup>
     <Folder Include="custom_parallel_envs\" />
+    <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="tools\" />
     <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
