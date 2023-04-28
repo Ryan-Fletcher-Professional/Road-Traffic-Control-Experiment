@@ -29,14 +29,17 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="multi_network_runner.py" />
-    <Compile Include="observations.py">
+    <Compile Include="custom_parallel_envs\my_parallel_wrapper_fns.py" />
+    <Compile Include="custom_parallel_envs\my_sumo_env.py" />
+    <Compile Include="custom_parallel_envs\my_sumo_environment_PZ.py" />
+    <Compile Include="custom_parallel_envs\observations.py">
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="other\module1.py" />
     <Compile Include="other\readLargeFile.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="rewards.py" />
+    <Compile Include="custom_parallel_envs\rewards.py" />
     <Compile Include="single_network_runner.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
@@ -44,6 +47,7 @@
     <Compile Include="tools\filterElements.py" />
   </ItemGroup>
   <ItemGroup>
+    <Folder Include="custom_parallel_envs\" />
     <Folder Include="tools\" />
     <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
