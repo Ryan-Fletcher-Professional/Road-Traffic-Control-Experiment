@@ -49,6 +49,7 @@
   <ItemGroup>
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
+    <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="tools\" />
     <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
@@ -69,6 +70,15 @@
     <Content Include="readme.md" />
     <Content Include="sumo_networks\ingolstadt21.rou.xml" />
     <Content Include="sumo_networks\ingolstadt21.sumocfg" />
+    <Content Include="sumo_networks\TUM-VT\24h_bicycle_sim.sumocfg" />
+    <Content Include="sumo_networks\TUM-VT\24h_sim.sumocfg" />
+    <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\gui_settings.settings.xml" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt.poly.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\simulation_view.png" />
+    <Content Include="sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml" />
   </ItemGroup>
   <Import Project="$(MSBuildExtensionsPath32)\Microsoft\VisualStudio\v$(VisualStudioVersion)\Python Tools\Microsoft.PythonTools.targets" />
   <!-- Uncomment the CoreCompile target to enable the Build command in
