@@ -41,6 +41,7 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="custom_parallel_envs\rewards.py" />
+    <Compile Include="single_network_runner.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
