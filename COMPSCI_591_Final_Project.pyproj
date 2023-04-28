@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>fixed_time_TSC\fixed_ts.py</StartupFile>
+    <StartupFile>single_network_runner.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -13,7 +13,7 @@
     <RootNamespace>COMPSCI_591_Final_Project</RootNamespace>
     <IsWindowsApplication>True</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\sumo_networks\ingolstadt21.sumocfg"</CommandLineArguments>
+    <CommandLineArguments>"C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\sumo_networks\ingolstadt21.net.xml" "C:\Users\jancy\source\repos\COMPSCI_591_Final_Project\sumo_networks\ingolstadt21.rou.xml" 57600</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -29,6 +29,9 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="multi_network_runner.py" />
+    <Compile Include="observations.py">
+      <SubType>Code</SubType>
+    </Compile>
     <Compile Include="other\module1.py" />
     <Compile Include="other\readLargeFile.py">
       <SubType>Code</SubType>
@@ -54,6 +57,8 @@
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
     <Content Include="output\fixed_time_ts on 04-25-2023 21-22-27\full_output.xml" />
     <Content Include="powershell\junctions.txt" />
+    <Content Include="powershell\trips.txt" />
+    <Content Include="powershell\vehicles.txt" />
     <Content Include="sumo_networks\ingolstadt21.net.xml" />
     <Content Include="powershell\networks.ps1" />
     <Content Include="readme.md" />

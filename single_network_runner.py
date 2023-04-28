@@ -12,6 +12,7 @@ import sumo_rl
 import sys # getsysteminfo can be used to check memory usage
 
 import rewards
+import observations
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -68,7 +69,8 @@ env = sumo_rl.parallel_env(
                            num_seconds=61600,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=True,
-                           reward_fn=rewards.coordinated_mean_max_impedence_reward
+                           reward_fn=rewards.coordinated_mean_max_impedence_reward,
+                           observation_class=observations.CompressedObservationFunction
                            )
 
 # if gpu is to be used
