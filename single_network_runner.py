@@ -11,9 +11,6 @@ import gymnasium as gym
 import sumo_rl
 import sys # getsysteminfo can be used to check memory usage
 
-import rewards
-import observations
-
 import matplotlib
 import matplotlib.pyplot as plt
 
@@ -23,13 +20,17 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 
+from custom_parallel_envs.my_parallel_wrapper_fns import my_parallel_env
+from custom_parallel_envs.my_sumo_env import MySumoEnvironment
+import custom_parallel_envs.rewards as rewards
+import custom_parallel_envs.observations as observations
+
 """This file runs a single large neural network that takes inputs from and controls all the traffic signals in the traffic network."""
 
 # Get string representation of current date and time
 now = datetime.now()
 output_dir = getcwd() + "\\output\\" + "adaptive " + now.strftime("%m-%d-%Y %H-%M-%S")
 mkdir(output_dir)
-
 
 # create random generator
 rng = np.random.default_rng(seed=98765)
@@ -62,7 +63,11 @@ else:
 network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
 
 
-env = sumo_rl.parallel_env(
+net_file = getcwd() + "\\" + net_file
+route_file = getcwd() + "\\" + route_file
+
+env = my_parallel_env(
+                           sumo_env=MySumoEnvironment,
                            net_file=net_file,
                            route_file=route_file,
                            out_csv_name=output_dir + "\\" + network_name,
@@ -123,7 +128,7 @@ class DQN(nn.Module):
 # EPS_DECAY controls the rate of exponential decay of epsilon, higher means a slower decay
 # TAU is the update rate of the target network
 # LR is the learning rate of the AdamW optimizer
-BATCH_SIZE = 128
+BATCH_SIZE = 12#8
 GAMMA = 0.99
 EPS_START = 0.9
 EPS_END = 0.05
