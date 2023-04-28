@@ -46,12 +46,13 @@ class CompressedObservationFunction(ObservationFunction):
         queue = self.ts.get_lanes_queue()
         queue_mean = sum(queue) / len(queue)
         queue_stdev = np.std(queue)
-        observation = np.array(phase_id + min_green + [density_mean, density_stdev] + [queue_mean, queue_stdev], dtype=np.float32)
+        agent_total_waiting_time = sum(self.ts.get_accumulated_waiting_time_per_lane())
+        observation = np.array(phase_id + min_green + [density_mean, density_stdev] + [queue_mean, queue_stdev] + [agent_total_waiting_time], dtype=np.float32)
         return observation
 
     def observation_space(self) -> spaces.Box:
         """Return the observation space."""
         return spaces.Box(
-            low=np.zeros(self.ts.num_green_phases + 1 + 2, dtype=np.float32),
-            high=np.ones(self.ts.num_green_phases + 1 + 2, dtype=np.float32),
+            low=np.zeros(self.ts.num_green_phases + 1 + 2 + 2 + 1, dtype=np.float32),
+            high=np.ones(self.ts.num_green_phases + 1 + 2 + 2 + 1, dtype=np.float32),
         )
