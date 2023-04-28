@@ -12,6 +12,7 @@ https://sumo.dlr.de/docs/Tools/Xml.html
 https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html
 https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
 https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
+https://people.engr.tamu.edu/guni/Papers/NeurIPS-signals.pdf
 
 TODO:
 Use latest data model of Ingolstadt in our traffic simulation
