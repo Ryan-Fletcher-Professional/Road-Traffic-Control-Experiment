@@ -192,10 +192,6 @@ steps = []
 def optimize_model():
     if len(memory) < BATCH_SIZE:
         return
-
-    if env.num_agents != 21:
-        return
-
     transitions = memory.sample(BATCH_SIZE)
     # Transpose the batch (see https://stackoverflow.com/a/19343/3343043 for
     # detailed explanation). This converts batch-array of Transitions

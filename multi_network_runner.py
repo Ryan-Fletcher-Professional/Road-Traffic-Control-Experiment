@@ -6,12 +6,10 @@ from collections import namedtuple, deque
 from itertools import count
 import numpy as np
 from datetime import datetime
-
+from os import mkdir, getcwd
 import gymnasium as gym
 import sumo_rl
 import sys # getsysteminfo can be used to check memory usage
-
-import rewards
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -22,8 +20,18 @@ import torch.optim as optim
 import torch.nn.functional as F
 
 
+from custom_parallel_envs.my_parallel_wrapper_fns import my_parallel_env
+from custom_parallel_envs.my_sumo_env import MySumoEnvironment
+import custom_parallel_envs.rewards as rewards
+import custom_parallel_envs.observations as observations
+
+
 """This file runs multiple small neural networks that each take inputs from and control a single traffic signal in the traffic network."""
 
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + "adaptive " + now.strftime("%m-%d-%Y %H-%M-%S")
+mkdir(output_dir)
 
 # create random generator
 rng = np.random.default_rng(seed=98765)
@@ -53,14 +61,22 @@ else:
             net_file = files[1].name
             route_file=files[0].name
 
-env = sumo_rl.parallel_env(
+network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
+
+
+net_file = getcwd() + "\\" + net_file
+route_file = getcwd() + "\\" + route_file
+
+env = my_parallel_env(
+                           sumo_env=MySumoEnvironment,
                            net_file=net_file,
                            route_file=route_file,
-                           out_csv_name="output\\test-",
-                           num_seconds=61600,  # All the vehicles in the ingolstadt21 network exit 4000s after simulation start
+                           out_csv_name=output_dir + "\\" + network_name,
+                           num_seconds=61600,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=True,
-                           reward_fn=rewards.coordinated_mean_max_impedence_reward
+                           reward_fn=rewards.coordinated_mean_max_impedence_reward,
+                           observation_class=observations.CompressedObservationFunction
                            )
 
 # if gpu is to be used
@@ -215,15 +231,6 @@ def optimize_model(agent):
         net_out = target_nets[agent](non_final_next_states)
         for i in range(BATCH_SIZE):
             opt_actions[i] = {agent: net_out.numpy()[i].max()}
-
-            # actions = {}
-            # agent_action_index = 0
-            # for agent in env.agents:
-            #     actions_number = env.action_space(agent).n
-            #     opt_action_Q = net_out.numpy()[i][agent_action_index:agent_action_index+actions_number].max()
-            #     agent_action_index += actions_number
-            #     actions[agent] = opt_action_Q 
-            # opt_actions[i] = actions
         next_state_values[non_final_mask] = torch.Tensor([list(dictionary.values()) for dictionary in [opt_actions[index] for index in opt_actions]])  # torch.Tensor(opt_actions.values()).unsqueeze(0)
     # Compute the expected Q values
     expected_state_action_values = (next_state_values * GAMMA) + reward_batch

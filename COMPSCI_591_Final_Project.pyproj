@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>single_network_runner.py</StartupFile>
+    <StartupFile>multi_network_runner.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
