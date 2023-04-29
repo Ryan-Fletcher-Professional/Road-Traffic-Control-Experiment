@@ -381,3 +381,5 @@ healthchecksdb
 /output/04-26-2023 15-19-23 ingolstadt21 fixed_time_using_TraCI
 /fixed_time_TSC/excel
 /sumo_networks/maps.png
+/output
+/sumo_networks/TUM-VT/bicycle_routes_24h.rou.xml
