@@ -9,7 +9,7 @@ from datetime import datetime
 from os import mkdir, getcwd
 import gymnasium as gym
 import sumo_rl
-import sys # getsysteminfo can be used to check memory usage
+import sys
 
 import matplotlib
 import matplotlib.pyplot as plt
@@ -27,51 +27,32 @@ import custom_parallel_envs.observations as observations
 
 """This file runs a single large neural network that takes inputs from and controls all the traffic signals in the traffic network."""
 
-# Get string representation of current date and time
-now = datetime.now()
-output_dir = getcwd() + "\\output\\" + "adaptive " + now.strftime("%m-%d-%Y %H-%M-%S")
-mkdir(output_dir)
-
 # create random generator
 rng = np.random.default_rng(seed=98765)
 random.seed("98765")
 
-DEFAULT_BEGIN_TIME = 1000
-
-if(len(sys.argv) > 2):
+if(len(sys.argv) > 4):
     net_file = sys.argv[1]
     route_file = sys.argv[2]
-    begin_time_s = int(sys.argv[3])
+    additional_sumo_cmd = sys.argv[3]
+    begin_time_s = int(sys.argv[4])
 else:
-    begin_time_s = DEFAULT_BEGIN_TIME
-    root = tk.Tk()
-    root.withdraw()
-    directory = ""
-    directory = filedialog.askdirectory(title="Select Traffic Data Directory")
-    files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
-    if len(files) < 2:
-        print("Less than 2 files.")
-        exit(0)
-    else:
-        if(files[0].name.endswith("net.xml")):
-            net_file = files[0].name
-            route_file = files[1].name
-        else:
-            net_file = files[1].name
-            route_file=files[0].name
+    exit(1)
 
 network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
 
-
-net_file = getcwd() + "\\" + net_file
-route_file = getcwd() + "\\" + route_file
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + f"single DQN {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
+mkdir(output_dir)
 
 env = my_parallel_env(
                            sumo_env=MySumoEnvironment,
                            net_file=net_file,
                            route_file=route_file,
+                           additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
-                           num_seconds=61600,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                           num_seconds=86400,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=True,
                            reward_fn=rewards.coordinated_mean_max_impedence_reward,
@@ -120,7 +101,7 @@ class DQN(nn.Module):
             h2 = self.layer3(h1, compressedh0)
         return self.layer4(h2[0])
 
-
+# Hyperparameters of the DQN
 # BATCH_SIZE is the number of transitions sampled from the replay buffer
 # GAMMA is the discount factor as mentioned in the previous section
 # EPS_START is the starting value of epsilon
@@ -150,8 +131,6 @@ target_net.load_state_dict(policy_net.state_dict())    # Copy parameters and buf
 
 optimizer = optim.AdamW(policy_net.parameters(), lr=LR, amsgrad=True)
 memory = ReplayMemory(10000)
-
-steps_done = 0
 
 obs = observations
 observations = np.array([], dtype=np.float32)  # Flattened version of observations dictionary
@@ -184,10 +163,6 @@ def select_actions(states):
     else:
         actions = {agent: torch.tensor([[env.action_space(agent).sample()]], device=device, dtype=torch.long)[0].item() for agent in env.agents}
         return actions
-
-
-episode_durations = []
-steps = []
 
 def optimize_model():
     if len(memory) < BATCH_SIZE:
@@ -283,7 +258,6 @@ for i_episode in range(0, num_episodes):
                 next_states[agent] = obs[agent] 
 
         if all(done == True for done in dones.values()):
-            episode_durations.append(t + 1)
             break
 
         observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
@@ -306,7 +280,3 @@ for i_episode in range(0, num_episodes):
         for key in policy_net_state_dict:
             target_net_state_dict[key] = policy_net_state_dict[key]*TAU + target_net_state_dict[key]*(1-TAU)
         target_net.load_state_dict(target_net_state_dict)
-
-        steps.append(steps_done)
-
-print('Complete')
