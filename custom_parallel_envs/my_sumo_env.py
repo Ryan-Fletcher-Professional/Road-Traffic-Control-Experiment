@@ -31,6 +31,6 @@ class MySumoEnvironment(SumoEnvironment):
             "system_mean_waiting_time": 0.0 if len(vehicles) == 0 else np.mean(waiting_times),
             "system_mean_speed": 0.0 if len(vehicles) == 0 else np.mean(speeds),
             "system_total_CO2_emissions_mg": sum(CO2_emissions),
-            "fuel_consumption_mg": sum(fuel_consumption)
+            "system_total_fuel_consumption_mg": sum(fuel_consumption)
         }
 
