@@ -19,60 +19,35 @@ import torch.nn as nn
 import torch.optim as optim
 import torch.nn.functional as F
 
-
 from custom_parallel_envs.my_parallel_wrapper_fns import my_parallel_env
 from custom_parallel_envs.my_sumo_env import MySumoEnvironment
 import custom_parallel_envs.rewards as rewards
 import custom_parallel_envs.observations as observations
 
-
 """This file runs multiple small neural networks that each take inputs from and control a single traffic signal in the traffic network."""
 
-# Get string representation of current date and time
-now = datetime.now()
-output_dir = getcwd() + "\\output\\" + "adaptive " + now.strftime("%m-%d-%Y %H-%M-%S")
-mkdir(output_dir)
-
-# create random generator
-rng = np.random.default_rng(seed=98765)
-random.seed("98765")
-
-DEFAULT_BEGIN_TIME = 1000
-
-if(len(sys.argv) > 2):
+if(len(sys.argv) > 4):
     net_file = sys.argv[1]
     route_file = sys.argv[2]
-    begin_time_s = int(sys.argv[3])
+    additional_sumo_cmd = sys.argv[3]
+    begin_time_s = int(sys.argv[4])
 else:
-    begin_time_s = DEFAULT_BEGIN_TIME
-    root = tk.Tk()
-    root.withdraw()
-    directory = ""
-    directory = filedialog.askdirectory(title="Select Traffic Data Directory")
-    files = filedialog.askopenfiles(title="Select Network and Route Files",initialdir=directory)
-    if len(files) < 2:
-        print("Less than 2 files.")
-        exit(0)
-    else:
-        if(files[0].name.endswith("net.xml")):
-            net_file = files[0].name
-            route_file = files[1].name
-        else:
-            net_file = files[1].name
-            route_file=files[0].name
+    exit(1)
 
 network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
 
-
-net_file = getcwd() + "\\" + net_file
-route_file = getcwd() + "\\" + route_file
+# Get string representation of current date and time
+now = datetime.now()
+output_dir = getcwd() + "\\output\\" + f"IDQN {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
+mkdir(output_dir)
 
 env = my_parallel_env(
                            sumo_env=MySumoEnvironment,
                            net_file=net_file,
                            route_file=route_file,
+                           additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
-                           num_seconds=61600,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                           num_seconds=86400,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=True,
                            reward_fn=rewards.coordinated_mean_max_impedence_reward,
