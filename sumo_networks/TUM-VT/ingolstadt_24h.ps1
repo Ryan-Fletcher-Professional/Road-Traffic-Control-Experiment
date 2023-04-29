@@ -6,10 +6,10 @@
 echo "Parsing network file"
 
 # Network file parsing
-#$network_xml = [XML](gc sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml)
-#$network_xml.net | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.net
-#$network_xml.net.junction | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.junctions
-#$network_xml.net.tlLogic | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.traffic_lights
+$network_xml = [XML](gc sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml)
+$network_xml.net | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.net
+$network_xml.net.junction | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.junctions
+$network_xml.net.tlLogic | out-file -Encoding utf8 sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.traffic_lights
 
 echo "Parsing motor route file"
 
