@@ -391,3 +391,7 @@ healthchecksdb
 /output/adaptive 04-29-2023 08-08-58/ingolstadt21_conn0_ep1.csv
 /output/adaptive 04-29-2023 08-08-58
 /output
+/sumo_networks/TUM-VT/motorized_routes_2020-09-16_24h.rou.xml
+/sumo_networks/TUM-VT/ingolstadt.poly.xml/ingolstadt.poly.xml
+/sumo_networks/TUM-VT/ingolstadt.poly.xml
+/fixed_time_TSC

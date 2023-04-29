@@ -54,6 +54,10 @@
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="sumo_networks\TUM-VT\" />
+    <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
+    <Folder Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\" />
+    <Folder Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\" />
+    <Folder Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\" />
     <Folder Include="tools\" />
     <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
@@ -77,10 +81,24 @@
     <Content Include="sumo_networks\TUM-VT\24h_bicycle_sim.sumocfg" />
     <Content Include="sumo_networks\TUM-VT\24h_sim.sumocfg" />
     <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\bicycle_routes_24h.rou.xml" />
+    <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\bicycle_routes_24h.rou.xml.routes" />
+    <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\bicycle_routes_24h.rou.xml.trips" />
+    <Content Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\bicycle_routes_24h.rou.xml.vTypes" />
     <Content Include="sumo_networks\TUM-VT\gui_settings.settings.xml" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt.poly.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\ingolstadt.poly.xml" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\ingolstadt.poly.xml.additional" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.junctions" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.net" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.traffic_lights" />
     <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" />
+    <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml" />
+    <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml.routes" />
+    <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml.trips" />
+    <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml.vTypes" />
     <Content Include="sumo_networks\TUM-VT\simulation_view.png" />
     <Content Include="sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml" />
   </ItemGroup>
