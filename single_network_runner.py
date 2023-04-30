@@ -139,6 +139,8 @@ for agent in env.agents:
         
 states = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
 
+steps_done = 0
+
 def select_actions(states):
     global steps_done
     sample = random.random()
@@ -226,6 +228,7 @@ else:
     num_episodes = 50
 
 for i_episode in range(0, num_episodes):
+    steps_done = 0
     if i_episode > 0:
         # Initialize the environment and get it's state
 

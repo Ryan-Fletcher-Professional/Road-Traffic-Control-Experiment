@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>multi_network_runner.py</StartupFile>
+    <StartupFile>single_network_runner.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -53,13 +53,13 @@
   <ItemGroup>
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
+    <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
     <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
     <Folder Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\" />
     <Folder Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\" />
     <Folder Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\" />
     <Folder Include="tools\" />
-    <Folder Include="output\fixed_time_ts on 04-25-2023 21-22-27\" />
     <Folder Include="tests\" />
     <Folder Include="other\" />
     <Folder Include="sumo_networks\" />
@@ -69,7 +69,7 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
-    <Content Include="output\fixed_time_ts on 04-25-2023 21-22-27\full_output.xml" />
+    <Content Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\_conn0_ep1.csv" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="powershell\trips.txt" />
     <Content Include="powershell\vehicles.txt" />
