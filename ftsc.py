@@ -47,11 +47,11 @@ env = MySumoEnvironment(
                            route_file=route_file,
                            additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\",
-                           num_seconds=86400,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                           num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            fixed_ts = True,
                            single_agent=False,
                            begin_time=begin_time_s,
-                           use_gui=True
+                           use_gui=False
                            )
 
 # Get the number of state observations
