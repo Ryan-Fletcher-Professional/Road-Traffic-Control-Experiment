@@ -13,7 +13,7 @@
     <RootNamespace>COMPSCI_591_Final_Project</RootNamespace>
     <IsWindowsApplication>True</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" "sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz,sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" "--additional-files sumo_networks\TUM-VT\ingolstadt.poly.xml.gz,sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml --step-length 5 --ignore-junction-blocker 15 --device.rerouting.probability 0.2" 21600</CommandLineArguments>
+    <CommandLineArguments>"sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" "sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz,sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" "--additional-files sumo_networks\TUM-VT\ingolstadt.poly.xml.gz,sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml --step-length 10 --ignore-junction-blocker 15 --device.rerouting.probability 0.2" 21600</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
