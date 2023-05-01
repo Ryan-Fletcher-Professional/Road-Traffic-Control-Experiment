@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>single_network_runner.py</StartupFile>
+    <StartupFile>multi_network_runner_compressed_obs.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -13,7 +13,7 @@
     <RootNamespace>COMPSCI_591_Final_Project</RootNamespace>
     <IsWindowsApplication>True</IsWindowsApplication>
     <LaunchProvider>Standard Python launcher</LaunchProvider>
-    <CommandLineArguments>"sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" "sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz,sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" "--additional-files sumo_networks\TUM-VT\ingolstadt.poly.xml.gz,sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml --step-length 5 --ignore-junction-blocker 15 --device.rerouting.probability 0.2" 21600</CommandLineArguments>
+    <CommandLineArguments>"sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" "sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml.gz,sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" "--additional-files sumo_networks\TUM-VT\ingolstadt.poly.xml.gz,sumo_networks\TUM-VT\tlLogics_WAUT_2020-09-16_24h.add.xml --step-length 5 --ignore-junction-blocker 15 --device.rerouting.probability 0.2" 21600 5</CommandLineArguments>
     <EnableNativeCodeDebugging>False</EnableNativeCodeDebugging>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)' == 'Debug' ">
@@ -32,7 +32,7 @@
     <Compile Include="ftsc.py">
       <SubType>Code</SubType>
     </Compile>
-    <Compile Include="multi_network_runner.py" />
+    <Compile Include="multi_network_runner_compressed_obs.py" />
     <Compile Include="custom_parallel_envs\my_parallel_wrapper_fns.py" />
     <Compile Include="custom_parallel_envs\my_sumo_env.py" />
     <Compile Include="custom_parallel_envs\my_sumo_environment_PZ.py" />
@@ -45,6 +45,7 @@
     </Compile>
     <Compile Include="custom_parallel_envs\rewards.py" />
     <Compile Include="single_network_runner.py" />
+    <Compile Include="single_network_runner_uncompressed_obs.py" />
     <Compile Include="tests\test1.py">
       <SubType>Code</SubType>
     </Compile>
@@ -55,6 +56,7 @@
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
     <Folder Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\" />
+    <Folder Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\" />
     <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
     <Folder Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\" />
@@ -71,10 +73,6 @@
   <ItemGroup>
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
     <Content Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\_conn0_ep1.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1 - Copy.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep2.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\Screenshot 2023-04-30 202935.png" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="powershell\trips.txt" />
     <Content Include="powershell\vehicles.txt" />

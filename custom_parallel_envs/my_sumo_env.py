@@ -33,4 +33,13 @@ class MySumoEnvironment(SumoEnvironment):
             "system_total_CO2_emissions_mg": sum(CO2_emissions),
             "system_total_fuel_consumption_mg": sum(fuel_consumption)
         }
+    def _run_steps(self):
+        # Used for debugging 
+        time_to_act = False
+        while not time_to_act:
+            self._sumo_step()
+            for ts in self.ts_ids:
+                self.traffic_signals[ts].update()
+                if self.traffic_signals[ts].time_to_act:
+                    time_to_act = True
 

@@ -1,0 +1,18 @@
+﻿
+
+version                   : 1.6
+junctionCornerDetail      : 5
+walkingareas              : true
+limitTurnSpeed            : 5.50
+xsi                       : http://www.w3.org/2001/XMLSchema-instance
+noNamespaceSchemaLocation : http://sumo.dlr.de/xsd/net_file.xsd
+location                  : location
+type                      : {type, type, type, type...}
+edge                      : {edge, edge, edge, edge...}
+tlLogic                   : {tlLogic, tlLogic, tlLogic, tlLogic...}
+junction                  : {junction, junction, junction, junction...}
+connection                : {connection, connection, connection, connection...}
+roundabout                : {roundabout, roundabout, roundabout, roundabout...}
+
+
+
