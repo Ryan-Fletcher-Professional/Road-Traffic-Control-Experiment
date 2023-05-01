@@ -39,6 +39,7 @@
     <Compile Include="custom_parallel_envs\observations.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="multi_network_runner_uncompressed_obs_linux.py" />
     <Compile Include="other\module1.py" />
     <Compile Include="other\readLargeFile.py">
       <SubType>Code</SubType>
