@@ -31,11 +31,12 @@ import custom_parallel_envs.observations as observations
 rng = np.random.default_rng(seed=98765)
 random.seed("98765")
 
-if(len(sys.argv) > 4):
+if(len(sys.argv) > 5):
     net_file = sys.argv[1]
     route_file = sys.argv[2]
     additional_sumo_cmd = sys.argv[3]
     begin_time_s = int(sys.argv[4])
+    action_step_length = int(sys.argv[5])
 else:
     exit(1)
 
@@ -52,6 +53,7 @@ env = my_parallel_env(
                            route_file=route_file,
                            additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
+                           delta_time=action_step_length,
                            num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=False,
@@ -225,7 +227,7 @@ def optimize_model():
 if torch.cuda.is_available():
     num_episodes = 600
 else:
-    num_episodes = 1
+    num_episodes = 50
 
 for i_episode in range(0, num_episodes):
     steps_done = 0
@@ -245,26 +247,41 @@ for i_episode in range(0, num_episodes):
         actions = select_actions(states)
         obs, rews, terminations, truncations, infos = env.step(actions)
         rewards_new = []
-        for agent in env.agents:
-            rewards_new.append(rews[agent])
-        reward = torch.tensor(rewards_new, device=device)
 
-        dones = {}
-        next_states = {}
-        for agent in env.agents:
-            dones[agent] = terminations[agent] or truncations[agent]
+        if len(env.agents) != 0:
+            for agent in env.agents:
+                rewards_new.append(rews[agent])
+            reward = torch.tensor(rewards_new, device=device)
 
-        for agent in env.agents:
-            if dones[agent]:
-                next_states[agent] = None
-            else:
-                next_states[agent] = obs[agent] 
+            dones = {}
+            next_states = {}
+            for agent in env.agents:
+                dones[agent] = terminations[agent] or truncations[agent]
 
-        if all(done == True for done in dones.values()):
-            break
+            for agent in env.agents:
+                if dones[agent]:
+                    next_states[agent] = None
+                else:
+                    next_states[agent] = obs[agent]             
+            observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
+        else:
+            ts_ids = [ts for ts in truncations]
+            for ts in ts_ids:
+                rewards_new.append(rews[ts])
+            reward = torch.tensor(rewards_new, device=device)
 
-        observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
+            dones = {}
+            next_states = {}
+            for ts in ts_ids:
+                dones[ts] = terminations[ts] or truncations[ts]
 
+            for ts in ts_ids:
+                if dones[ts]:
+                    next_states[ts] = None
+                else:
+                    next_states[ts] = obs[ts]  
+            if all(done == True for done in dones.values()):
+                break
         next_states_tensor = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
 
         # Store the transition in memory
