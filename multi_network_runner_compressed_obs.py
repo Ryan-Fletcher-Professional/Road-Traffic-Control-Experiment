@@ -49,7 +49,7 @@ env = my_parallel_env(
                            additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
                            delta_time=action_step_length,
-                           num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                           num_seconds=21630,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
                            begin_time=begin_time_s,
                            use_gui=False,
                            reward_fn=rewards.coordinated_mean_max_impedence_reward,
@@ -106,7 +106,7 @@ class DQN(nn.Module):
 # EPS_DECAY controls the rate of exponential decay of epsilon, higher means a slower decay
 # TAU is the update rate of the target network
 # LR is the learning rate of the AdamW optimizer
-BATCH_SIZE = 128
+BATCH_SIZE = 4
 GAMMA = 0.99
 EPS_START = 0.9
 EPS_END = 0.05
@@ -253,6 +253,10 @@ for i_episode in range(0, num_episodes):
         truncated = True if True in list(truncations.values()) else False
         reward = torch.tensor(rewards_new, device=device)
         done = terminated or truncated
+        
+        if done:
+            episode_durations.append(t + 1)
+            break
 
         if terminated:
             next_state = None
@@ -288,8 +292,5 @@ for i_episode in range(0, num_episodes):
 
         steps.append(steps_done)
 
-        if done:
-            episode_durations.append(t + 1)
-            break
 
 print('Complete')
