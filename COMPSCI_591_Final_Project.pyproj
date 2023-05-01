@@ -54,6 +54,7 @@
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
+    <Folder Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\" />
     <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
     <Folder Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\" />
@@ -70,6 +71,10 @@
   <ItemGroup>
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
     <Content Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\_conn0_ep1.csv" />
+    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1 - Copy.csv" />
+    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep2.csv" />
+    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\Screenshot 2023-04-30 202935.png" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="powershell\trips.txt" />
     <Content Include="powershell\vehicles.txt" />

@@ -262,7 +262,7 @@ for i_episode in range(0, num_episodes):
 
         if all(done == True for done in dones.values()):
             break
-
+        
         observations = np.concatenate([next_states[agent] for agent in env.agents], axis=None)
 
         next_states_tensor = torch.tensor(observations, dtype=torch.float32, device=device).unsqueeze(0)
