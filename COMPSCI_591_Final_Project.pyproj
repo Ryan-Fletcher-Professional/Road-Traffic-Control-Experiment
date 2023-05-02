@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>multi_network_runner_uncompressed_obs_linux.py</StartupFile>
+    <StartupFile>multi_network_runner_uncompressed_obs.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -39,6 +39,7 @@
     <Compile Include="custom_parallel_envs\observations.py">
       <SubType>Code</SubType>
     </Compile>
+    <Compile Include="multi_network_runner_uncompressed_obs.py" />
     <Compile Include="multi_network_runner_uncompressed_obs_linux.py" />
     <Compile Include="other\module1.py" />
     <Compile Include="other\readLargeFile.py">
