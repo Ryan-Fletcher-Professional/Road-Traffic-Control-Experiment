@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>b64d864c-4363-4677-a9b9-9fbb59700e94</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>multi_network_runner_compressed_obs.py</StartupFile>
+    <StartupFile>multi_network_runner_uncompressed_obs_linux.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
@@ -56,7 +56,7 @@
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
-    <Folder Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\" />
+    <Folder Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\" />
     <Folder Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\" />
     <Folder Include="output\single DQN Uncompressed Obs ingolstadt_24h 04-30-2023 23-44-59\" />
     <Folder Include="sumo_networks\TUM-VT\" />
@@ -76,8 +76,8 @@
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
     <Content Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\_conn0_ep1.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1.csv" />
-    <Content Include="output\single DQN ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep2.csv" />
+    <Content Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep2.csv" />
     <Content Include="output\single DQN Uncompressed Obs ingolstadt_24h 04-30-2023 23-44-59\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="powershell\trips.txt" />
