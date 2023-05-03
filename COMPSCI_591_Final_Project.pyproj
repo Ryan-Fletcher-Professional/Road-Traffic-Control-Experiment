@@ -77,6 +77,9 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="fixed_time_TSC\output_ingolstadt21.ps1" />
+    <Content Include="milestone2\CO2_Emissions_mg.xlsx" />
+    <Content Include="milestone2\System Mean Speed.xlsx" />
+    <Content Include="milestone2\System Total Waiting Time.xlsx" />
     <Content Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="output\CDQN uncompressed Obs ingolstadt_24h 05-01-2023 20-14-00\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\_conn0_ep1.csv" />
