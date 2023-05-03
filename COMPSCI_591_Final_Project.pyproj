@@ -56,6 +56,7 @@
   <ItemGroup>
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
+    <Folder Include="milestone2\" />
     <Folder Include="output\CDQN uncompressed Obs ingolstadt_24h 05-01-2023 20-14-00\" />
     <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
     <Folder Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\" />
