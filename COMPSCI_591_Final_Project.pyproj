@@ -46,9 +46,6 @@
       <SubType>Code</SubType>
     </Compile>
     <Compile Include="custom_parallel_envs\rewards.py" />
-    <Compile Include="other\wilcoxon_signed_rank_test.py">
-      <SubType>Code</SubType>
-    </Compile>
     <Compile Include="single_network_runner.py" />
     <Compile Include="single_network_runner_uncompressed_obs.py" />
     <Compile Include="tests\test1.py">
@@ -87,7 +84,6 @@
     <Content Include="milestone2\sdqn_uncompressed_ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="milestone2\sys_mean_speed.csv" />
     <Content Include="milestone2\sys_total_waiting_time.csv" />
-    <Content Include="milestone2\wilcoxon_signed_rank_test.results" />
     <Content Include="milestone2\_conn0_ep1.csv" />
     <Content Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="output\CDQN uncompressed Obs ingolstadt_24h 05-01-2023 20-14-00\ingolstadt_24h_conn0_ep1.csv" />
