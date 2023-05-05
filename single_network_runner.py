@@ -31,11 +31,13 @@ import custom_parallel_envs.observations as observations
 rng = np.random.default_rng(seed=98765)
 random.seed("98765")
 
-if(len(sys.argv) > 4):
+if(len(sys.argv) > 4):  # MODIFIED ARGUMENT ORDER TO HAVE ROUTE FILE PAIRS LAST
     net_file = sys.argv[1]
-    route_file = sys.argv[2]
-    additional_sumo_cmd = sys.argv[3]
-    begin_time_s = int(sys.argv[4])
+    additional_sumo_cmd = sys.argv[2]
+    begin_time_s = int(sys.argv[3])
+    route_files = []
+    for i in range(4, len(sys.argv)):
+        route_files.append(sys.argv[i])
 else:
     exit(1)
 
@@ -49,7 +51,7 @@ mkdir(output_dir)
 env = my_parallel_env(
                            sumo_env=MySumoEnvironment,
                            net_file=net_file,
-                           route_file=route_file,
+                           route_file=route_files,
                            additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
                            num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals

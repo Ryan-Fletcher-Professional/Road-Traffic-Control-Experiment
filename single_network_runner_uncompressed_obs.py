@@ -23,7 +23,7 @@ import torch.nn.functional as F
 from custom_parallel_envs.my_parallel_wrapper_fns import my_parallel_env
 from custom_parallel_envs.my_sumo_env import MySumoEnvironment
 import custom_parallel_envs.rewards as rewards
-import custom_parallel_envs.observations as observations
+import custom_parallel_envs.observations as observation_classes
 
 """This file runs a single large neural network that takes inputs from and controls all the traffic signals in the traffic network."""
 
@@ -31,12 +31,14 @@ import custom_parallel_envs.observations as observations
 rng = np.random.default_rng(seed=98765)
 random.seed("98765")
 
-if(len(sys.argv) > 5):
+if(len(sys.argv) > 5):  # MODIFIED ARGUMENT ORDER TO HAVE ROUTE FILE PAIRS LAST
     net_file = sys.argv[1]
-    route_file = sys.argv[2]
-    additional_sumo_cmd = sys.argv[3]
-    begin_time_s = int(sys.argv[4])
-    action_step_length = int(sys.argv[5])
+    additional_sumo_cmd = sys.argv[2]
+    begin_time_s = int(sys.argv[3])
+    action_step_length = int(sys.argv[4])
+    route_files = []
+    for i in range(5, len(sys.argv)):
+        route_files.append(sys.argv[i])
 else:
     exit(1)
 
@@ -50,7 +52,7 @@ mkdir(output_dir)
 env = my_parallel_env(
                            sumo_env=MySumoEnvironment,
                            net_file=net_file,
-                           route_file=route_file,
+                           route_file=route_files[0],
                            additional_sumo_cmd=additional_sumo_cmd,
                            out_csv_name=output_dir + "\\" + network_name,
                            delta_time=action_step_length,
@@ -58,7 +60,7 @@ env = my_parallel_env(
                            begin_time=begin_time_s,
                            use_gui=False,
                            reward_fn=rewards.coordinated_mean_max_impedence_reward,
-                           observation_class=observations.DefaultObservationFunction
+                           observation_class=observation_classes.DefaultObservationFunction
                            )
 
 # if gpu is to be used
@@ -233,6 +235,20 @@ for i_episode in range(0, num_episodes):
     steps_done = 0
     if i_episode > 0:
         # Initialize the environment and get it's state
+
+        env = my_parallel_env(
+                                sumo_env=MySumoEnvironment,
+                                net_file=net_file,
+                                route_file=route_files[i_episode % len(route_files)],
+                                additional_sumo_cmd=additional_sumo_cmd,
+                                out_csv_name=output_dir + "\\" + network_name,
+                                delta_time=action_step_length,
+                                num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                                begin_time=begin_time_s,
+                                use_gui=False,
+                                reward_fn=rewards.coordinated_mean_max_impedence_reward,
+                                observation_class=observation_classes.DefaultObservationFunction
+                             )
 
         obs = env.reset()
         observations = np.array([], dtype=np.float32)
