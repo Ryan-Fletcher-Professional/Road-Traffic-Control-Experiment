@@ -112,9 +112,11 @@
     <Content Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\ingolstadt.poly.xml.additional" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml.gz" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.edges" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.junctions" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.net" />
     <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.net.xml\ingolstadt_24h.net.xml.traffic_lights" />
+    <Content Include="sumo_networks\TUM-VT\ingolstadt_24h.ps1" />
     <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml.gz" />
     <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml" />
     <Content Include="sumo_networks\TUM-VT\motorized_routes_2020-09-16_24h.rou.xml\motorized_routes_2020-09-16_24h.rou.xml.routes" />
