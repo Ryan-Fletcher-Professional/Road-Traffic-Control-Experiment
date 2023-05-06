@@ -44,19 +44,24 @@ now = datetime.now()
 output_dir = getcwd() + "/output/" + f"CDQN uncompressed Obs {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
 mkdir(output_dir)
 
-env = my_parallel_env(
-                           sumo_env=MySumoEnvironment,
-                           net_file=net_file,
-                           route_file=route_files[0],
-                           additional_sumo_cmd=additional_sumo_cmd,
-                           out_csv_name=output_dir + "/" + network_name,
-                           delta_time=action_step_length,
-                           num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
-                           begin_time=begin_time_s,
-                           use_gui=False,
-                           reward_fn=rewards.coordinated_mean_max_impedence_reward,
-                           observation_class=observation_classes.DefaultObservationFunction
-                           )
+envs = []
+for i in range(len(route_files)):
+    print("Instantiating environment", i)
+    envs.append(my_parallel_env(
+                                sumo_env=MySumoEnvironment,
+                                net_file=net_file,
+                                route_file=route_files[i],
+                                additional_sumo_cmd=additional_sumo_cmd,
+                                out_csv_name=output_dir + "\\" + network_name,
+                                delta_time=action_step_length,
+                                num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                                begin_time=begin_time_s,
+                                use_gui=False,
+                                reward_fn=rewards.coordinated_mean_max_impedence_reward,
+                                observation_class=observation_classes.DefaultObservationFunction
+                             ))
+
+env = envs[0]
 
 # if gpu is to be used
 # Compute Unified Device Architecture (CUDA) is an NVIDIA API for general purpose computing on GPUs
@@ -233,19 +238,7 @@ else:
 for i_episode in range(0, num_episodes):
     # Initialize the environment and get its state
     if i_episode > 0:
-        env = my_parallel_env(
-                           sumo_env=MySumoEnvironment,
-                           net_file=net_file,
-                           route_file=route_files[i_episode % len(route_files)],
-                           additional_sumo_cmd=additional_sumo_cmd,
-                           out_csv_name=output_dir + "/" + network_name,
-                           delta_time=action_step_length,
-                           num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
-                           begin_time=begin_time_s,
-                           use_gui=False,
-                           reward_fn=rewards.coordinated_mean_max_impedence_reward,
-                           observation_class=observation_classes.DefaultObservationFunction
-                           )
+        env = envs[i_episode % len(envs)]
 
         obs = env.reset()
         observations = np.array([], dtype=np.float32)
