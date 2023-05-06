@@ -49,19 +49,24 @@ now = datetime.now()
 output_dir = getcwd() + "\\output\\" + f"single DQN Uncompressed Obs {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
 mkdir(output_dir)
 
-env = my_parallel_env(
-                           sumo_env=MySumoEnvironment,
-                           net_file=net_file,
-                           route_file=route_files[0],
-                           additional_sumo_cmd=additional_sumo_cmd,
-                           out_csv_name=output_dir + "\\" + network_name,
-                           delta_time=action_step_length,
-                           num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
-                           begin_time=begin_time_s,
-                           use_gui=False,
-                           reward_fn=rewards.coordinated_mean_max_impedence_reward,
-                           observation_class=observation_classes.DefaultObservationFunction
-                           )
+envs = []
+for i in range(len(route_files)):
+    print("Instantiating environment", i)
+    envs.append(my_parallel_env(
+                                sumo_env=MySumoEnvironment,
+                                net_file=net_file,
+                                route_file=route_files[i],
+                                additional_sumo_cmd=additional_sumo_cmd,
+                                out_csv_name=output_dir + "\\" + network_name,
+                                delta_time=action_step_length,
+                                num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
+                                begin_time=begin_time_s,
+                                use_gui=False,
+                                reward_fn=rewards.coordinated_mean_max_impedence_reward,
+                                observation_class=observation_classes.DefaultObservationFunction
+                             ))
+
+env = envs[0]
 
 # if gpu is to be used
 # Compute Unified Device Architecture (CUDA) is an NVIDIA API for general purpose computing on GPUs
@@ -229,26 +234,14 @@ def optimize_model():
 if torch.cuda.is_available():
     num_episodes = 600
 else:
-    num_episodes = 3
+    num_episodes = 50
 
 for i_episode in range(0, num_episodes):
     steps_done = 0
     if i_episode > 0:
-        # Initialize the environment and get it's state
+        # Initialize the environment and get its state
 
-        env = my_parallel_env(
-                                sumo_env=MySumoEnvironment,
-                                net_file=net_file,
-                                route_file=route_files[i_episode % len(route_files)],
-                                additional_sumo_cmd=additional_sumo_cmd,
-                                out_csv_name=output_dir + "\\" + network_name,
-                                delta_time=action_step_length,
-                                num_seconds=36000,  # Only 4000 seconds per episode for the ingolstadt21 network that has 21 traffic signals
-                                begin_time=begin_time_s,
-                                use_gui=False,
-                                reward_fn=rewards.coordinated_mean_max_impedence_reward,
-                                observation_class=observation_classes.DefaultObservationFunction
-                             )
+        env = envs[i_episode % len(envs)]
 
         obs = env.reset()
         observations = np.array([], dtype=np.float32)
