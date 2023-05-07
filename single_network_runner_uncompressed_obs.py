@@ -65,6 +65,7 @@ for i in range(len(route_files)):
                                 reward_fn=rewards.coordinated_mean_max_impedence_reward,
                                 observation_class=observation_classes.DefaultObservationFunction
                              ))
+old_obs = [e.reset() for e in envs]  # To store new observations without resetting environments twice
 
 env = envs[0]
 
@@ -127,7 +128,7 @@ TAU = 0.005
 LR = 1e-4
 
 # Get the number of state observations
-observations = env.reset()
+observations = old_obs[0]
 
 # Get number of actions from gym action space
 n_actions = np.sum([env.action_space(a).n for a in env.agents])
@@ -240,13 +241,13 @@ for i_episode in range(0, num_episodes):
     steps_done = 0
     if i_episode > 0:
         # To save finished episode data
-        env.reset()
+        old_obs[(i_episode - 1) % len(envs)] = env.reset()
 
         # Initialize the environment and get its state
 
         env = envs[i_episode % len(envs)]
 
-        obs = env.reset()
+        obs = old_obs[i_episode % len(envs)]
         observations = np.array([], dtype=np.float32)
 
         for agent in env.agents:
