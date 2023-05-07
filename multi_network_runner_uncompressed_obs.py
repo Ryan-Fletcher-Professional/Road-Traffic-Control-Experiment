@@ -41,7 +41,7 @@ network_name = net_file[net_file.rindex('\\') + 1:net_file.index('.')]
 
 # Get string representation of current date and time
 now = datetime.now()
-output_dir = getcwd() + "\\output\\" + f"CDQN uncompressed Obs {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
+output_dir = getcwd() + "\\output\\" + f"CDQN uncompressed Obs THREE ROUTES {network_name} " + now.strftime("%m-%d-%Y %H-%M-%S")
 mkdir(output_dir)
 
 envs = []
