@@ -239,6 +239,9 @@ else:
 for i_episode in range(0, num_episodes):
     steps_done = 0
     if i_episode > 0:
+        # To save finished episode data
+        env.reset()
+
         # Initialize the environment and get its state
 
         env = envs[i_episode % len(envs)]
