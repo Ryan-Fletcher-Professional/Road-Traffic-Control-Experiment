@@ -57,11 +57,14 @@
     <Folder Include="custom_parallel_envs\" />
     <Folder Include="custom_parallel_envs\ingolstadt21\" />
     <Folder Include="milestone2\" />
+    <Folder Include="networks\" />
     <Folder Include="output\CDQN uncompressed Obs ingolstadt_24h 05-01-2023 20-14-00\" />
     <Folder Include="output\FTSC  ingolstadt_24h 04-29-2023 20-39-21\" />
     <Folder Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\" />
     <Folder Include="output\CDQN compressed Obs ingolstadt_24h 04-30-2023 23-48-43\" />
     <Folder Include="output\single DQN Uncompressed Obs ingolstadt_24h 04-30-2023 23-44-59\" />
+    <Folder Include="poster\" />
+    <Folder Include="poster\SDQN Def\" />
     <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
     <Folder Include="sumo_networks\TUM-VT\ingolstadt.poly.xml\" />
@@ -94,6 +97,10 @@
     <Content Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="output\single DQN compressed ingolstadt_24h 04-29-2023 22-27-38\ingolstadt_24h_conn0_ep2.csv" />
     <Content Include="output\single DQN Uncompressed Obs ingolstadt_24h 04-30-2023 23-44-59\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="poster\SDQN Def\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="poster\SDQN Def\ingolstadt_24h_conn1_ep1.csv" />
+    <Content Include="poster\SDQN Def\ingolstadt_24h_conn2_ep1.csv" />
+    <Content Include="poster\SDQN Def\results_sdqn_def_3_routes.xlsx" />
     <Content Include="powershell\junctions.txt" />
     <Content Include="powershell\trips.txt" />
     <Content Include="powershell\vehicles.txt" />
