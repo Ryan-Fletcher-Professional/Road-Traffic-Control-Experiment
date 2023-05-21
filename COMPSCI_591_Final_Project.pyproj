@@ -66,6 +66,8 @@
     <Folder Include="poster\" />
     <Folder Include="poster\CDQN Def\" />
     <Folder Include="poster\FTSC\" />
+    <Folder Include="poster\FTSC\delta-3\" />
+    <Folder Include="poster\FTSC\delta-100\" />
     <Folder Include="poster\SDQN Def\" />
     <Folder Include="sumo_networks\TUM-VT\" />
     <Folder Include="sumo_networks\TUM-VT\bicycle_routes_24h.rou.xml\" />
@@ -103,9 +105,12 @@
     <Content Include="poster\CDQN Def\ingolstadt_24h_conn1_ep1.csv" />
     <Content Include="poster\CDQN Def\ingolstadt_24h_conn2_ep1.csv" />
     <Content Include="poster\CDQN Def\mdqn_3_routes_uncompressed_observation.xlsx" />
-    <Content Include="poster\FTSC\ingolstadt_24h_conn0_ep1.csv" />
-    <Content Include="poster\FTSC\ingolstadt_24h_conn1_ep1.csv" />
-    <Content Include="poster\FTSC\ingolstadt_24h_conn2_ep1.csv" />
+    <Content Include="poster\FTSC\delta-100\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="poster\FTSC\delta-100\ingolstadt_24h_conn1_ep1.csv" />
+    <Content Include="poster\FTSC\delta-100\ingolstadt_24h_conn2_ep1.csv" />
+    <Content Include="poster\FTSC\delta-3\ingolstadt_24h_conn0_ep1.csv" />
+    <Content Include="poster\FTSC\delta-3\ingolstadt_24h_conn1_ep1.csv" />
+    <Content Include="poster\FTSC\delta-3\ingolstadt_24h_conn2_ep1.csv" />
     <Content Include="poster\SDQN Def\ingolstadt_24h_conn0_ep1.csv" />
     <Content Include="poster\SDQN Def\ingolstadt_24h_conn1_ep1.csv" />
     <Content Include="poster\SDQN Def\ingolstadt_24h_conn2_ep1.csv" />

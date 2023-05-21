@@ -43,7 +43,7 @@ mkdir(output_dir)
 # min_green (int): Minimum green time in a phase. Default: 5 seconds
 # max_green (int): Max green time in a phase. Default: 60 seconds. Warning: This parameter is currently ignored!
 
-DELTA_TIME = 3 # Set to smallest possible integer value for action step length
+DELTA_TIME = 100 # Set to smallest possible integer value for action step length
 
 # URL: https://sumo.dlr.de/docs/Simulation/Output/index.html
 # SUMO gui produces a step-log
