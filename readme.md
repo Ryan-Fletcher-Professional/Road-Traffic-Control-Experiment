@@ -1,3 +1,7 @@
+This was a term project experiment using unique modifications to a road-traffic control neural network, inspired by biological contexts.
+
+See "Final Results.pdf" for our final data and presentation.
+
 References:
 https://pytorch.org/tutorials/intermediate/reinforcement_q_learning.html
 https://github.com/eclipse/sumo/tree/main/docs/web/docs
@@ -13,8 +17,3 @@ https://sumo.dlr.de/docs/Networks/Import/OpenStreetMap.html
 https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
 https://sumo.dlr.de/docs/TraCI/Interfacing_TraCI_from_Python.html
 https://people.engr.tamu.edu/guni/Papers/NeurIPS-signals.pdf
-
-TODO:
-Use latest data model of Ingolstadt in our traffic simulation
-Could collect extra statistics within reward functions like CO2 Emissions.
-Complete the generation of the number of vehicles stopped and the system total waiting time for FTSC. Need to gather rest of the data.
